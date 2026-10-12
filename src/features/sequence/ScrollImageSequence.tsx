@@ -1,10 +1,11 @@
-import { useImperativeHandle, useRef } from 'react'
+import { useContext, useEffect, useImperativeHandle, useRef } from 'react'
 import type { CSSProperties, ReactNode, Ref } from 'react'
 import { gsap, ScrollTrigger, useGSAP } from '../../motion/gsap'
 import { FrameLoader } from './FrameLoader'
 import { drawBounds, frameIndex, isPlayableManifest, isPlayableVariant } from './types'
 import type { FocalPoint, SequenceController, SequenceManifest } from './types'
 import './sequence.css'
+import { PlaybackContext } from '../../motion/PlaybackContext'
 
 interface Props {
   poster: string
@@ -13,6 +14,7 @@ interface Props {
   className?: string
   children?: ReactNode
   fit?: 'cover' | 'contain'
+  mobileFit?: 'cover' | 'contain'
   focalPoint?: FocalPoint
   priority?: boolean
   disabled?: boolean
@@ -27,12 +29,15 @@ interface Props {
 
 type Connection = EventTarget & { saveData?: boolean; effectiveType?: string }
 
-export function ScrollImageSequence({ poster, alt, manifest, className = '', children, fit = 'cover', focalPoint, priority = false, disabled = false, pin = false, scrollDistance, triggerElement, refreshPriority = 0, onProgress, controllerRef }: Props) {
+export function ScrollImageSequence({ poster, alt, manifest, className = '', children, fit = 'cover', mobileFit = 'contain', focalPoint, priority = false, disabled = false, pin = false, scrollDistance, triggerElement, refreshPriority = 0, onProgress, controllerRef }: Props) {
+  const playbackEnabled = useContext(PlaybackContext)
   const root = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const image = useRef<HTMLImageElement>(null)
   const progress = useRef(0)
   const updateProgress = useRef<(() => void) | null>(null)
+  const progressCallback = useRef(onProgress)
+  useEffect(() => { progressCallback.current = onProgress }, [onProgress])
   const focalX = focalPoint?.x ?? 0.5
   const focalY = focalPoint?.y ?? 0.5
   const externallyControlled = !!controllerRef
@@ -48,38 +53,43 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
     const element = root.current
     const surface = canvas.current
     const posterImage = image.current
-    if (disabled || !isPlayableManifest(manifest) || !element || !surface || !posterImage) return
+    if (!playbackEnabled || disabled || !isPlayableManifest(manifest) || !element || !surface || !posterImage) return
     const context = surface.getContext('2d')
     if (!context) return
     const media = gsap.matchMedia()
     media.add({ desktop: '(min-width: 900px)', compact: '(max-width: 899px)', reduced: '(prefers-reduced-motion: reduce)' }, mediaContext => {
       if (mediaContext.conditions?.reduced) return
-      const compact = !!mediaContext.conditions?.compact
+      const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
+      if (deviceMemory && deviceMemory <= 1) return
+      const compact = !!mediaContext.conditions?.compact || !!(deviceMemory && deviceMemory <= 2)
       const variant = compact ? manifest.mobile : manifest.desktop
       if (!isPlayableVariant(variant)) return
       const connection = (navigator as Navigator & { connection?: Connection }).connection
       const constrained = () => connection?.saveData || /^(slow-2g|2g)$/.test(connection?.effectiveType ?? '')
       if (constrained()) return
       let near = false
+      let visible = false
       let posterSettled = posterImage.complete
       let width = 0
       let height = 0
       let lastIndex = -1
       let disposed = false
       surface.dataset.variant = compact ? 'mobile' : 'desktop'
+      const renderFit = mediaContext.conditions?.compact ? mobileFit : fit
+      surface.dataset.fit = renderFit
       const loader = new FrameLoader(variant, (frame, index) => {
         if (disposed || lastIndex === index || !width || !height) return
-        const bounds = drawBounds(frame.width, frame.height, width, height, fit, { x: focalX, y: focalY })
+        const bounds = drawBounds(frame.width, frame.height, width, height, renderFit, { x: focalX, y: focalY })
         try {
           // drawImage replaces opaque frames atomically; clear only letterbox gutters.
-          if (fit === 'contain') context.clearRect(0, 0, width, height)
+          if (renderFit === 'contain') context.clearRect(0, 0, width, height)
           context.drawImage(frame.source, bounds.x, bounds.y, bounds.width, bounds.height)
           lastIndex = index
           surface.dataset.ready = 'true'
           surface.dataset.frame = String(index)
         } catch { surface.dataset.drawError = 'true' }
       }, {
-        capacity: compact ? 8 : 10,
+        capacity: compact ? 10 : 12,
         concurrency: compact ? 2 : 3,
         onFailure: index => { surface.dataset.failedFrame = String(index) },
         onChange: stats => {
@@ -87,12 +97,15 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
           surface.dataset.pending = String(stats.pending)
           surface.dataset.failed = String(stats.failed)
           surface.dataset.target = String(stats.target)
+          surface.dataset.decoded = String(stats.decoded)
+          surface.dataset.aborted = String(stats.aborted)
+          surface.dataset.decodedBytes = String(stats.estimatedDecodedBytes)
         },
       })
       loader.suspend()
       const update = () => {
         const target = frameIndex(progress.current, variant.frameCount)
-        if (near && posterSettled && !constrained() && !document.hidden) loader.resume(target)
+        if (near && posterSettled && !constrained() && !document.hidden) loader.resume(target, visible ? undefined : 2)
         else loader.suspend()
         surface.dataset.target = String(target)
       }
@@ -123,6 +136,8 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
       resize.observe(element)
       const intersection = new IntersectionObserver(entries => { near = entries[0].isIntersecting; update() }, { rootMargin: priority ? '100% 0px' : '60% 0px' })
       intersection.observe(element)
+      const visibility = new IntersectionObserver(entries => { visible = entries[0].intersectionRatio > 0; update() })
+      visibility.observe(element)
       let trigger: ScrollTrigger | undefined
       if (!externallyControlled) {
         trigger = ScrollTrigger.create({
@@ -132,7 +147,7 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
           pin,
           pinSpacing: pin,
           refreshPriority,
-          onUpdate: self => { progress.current = self.progress; onProgress?.(self.progress); update() },
+          onUpdate: self => { progress.current = self.progress; progressCallback.current?.(self.progress); update() },
           onRefresh: self => { progress.current = self.progress; update() },
         })
         progress.current = trigger.progress
@@ -153,6 +168,7 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
         loader.dispose()
         resize.disconnect()
         intersection.disconnect()
+        visibility.disconnect()
         posterImage.removeEventListener('load', posterReady)
         posterImage.removeEventListener('error', posterReady)
         document.removeEventListener('visibilitychange', update)
@@ -163,10 +179,10 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
       }
     })
     return () => media.revert()
-  }, { scope: root, dependencies: [manifest, disabled, pin, fit, focalX, focalY, scrollDistance, triggerElement, refreshPriority, onProgress, externallyControlled, priority], revertOnUpdate: true })
+  }, { scope: root, dependencies: [manifest, disabled, pin, fit, mobileFit, focalX, focalY, scrollDistance, triggerElement, refreshPriority, externallyControlled, priority, playbackEnabled], revertOnUpdate: true })
 
   return (
-    <div ref={root} className={`scroll-image-sequence ${className}`} data-sequence={manifest?.id} style={{ '--sequence-fit': fit, '--sequence-focal': `${focalX * 100}% ${focalY * 100}%`, '--sequence-aspect': isPlayableManifest(manifest) ? `${manifest.desktop.width} / ${manifest.desktop.height}` : '16 / 9' } as CSSProperties}>
+    <div ref={root} className={`scroll-image-sequence ${className}`} data-sequence={manifest?.id} style={{ '--sequence-fit': fit, '--sequence-mobile-fit': mobileFit, '--sequence-focal': `${focalX * 100}% ${focalY * 100}%`, '--sequence-aspect': isPlayableManifest(manifest) ? `${manifest.desktop.width} / ${manifest.desktop.height}` : '16 / 9' } as CSSProperties}>
       <img ref={image} className="scroll-image-sequence__poster" src={poster} alt={alt} width={manifest?.desktop?.width} height={manifest?.desktop?.height} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" />
       {manifest && <canvas ref={canvas} className="scroll-image-sequence__canvas" aria-hidden="true" />}
       {children && <div className="scroll-image-sequence__content">{children}</div>}

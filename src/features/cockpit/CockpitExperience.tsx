@@ -7,7 +7,7 @@ export function CockpitExperience({ onOpenVideoModal }: { onOpenVideoModal?: (sr
   const root = useRef<HTMLElement>(null)
   const controller = useCinematicScene(root, cockpitManifest, 'cockpit')
   return <section ref={root} id="cockpit" className="cinematic-stage cinematic-cockpit" aria-labelledby="cockpit-title">
-    <ScrollImageSequence controllerRef={controller} manifest={cockpitManifest} poster={cockpitManifest.poster} alt={cockpitManifest.alt} fit="cover" className="scene-media" />
+    <ScrollImageSequence controllerRef={controller} manifest={cockpitManifest} poster={cockpitManifest.poster} alt={cockpitManifest.alt} fit="contain" className="scene-media" />
     <div className="scene-shade" aria-hidden="true" />
     <div className="scene-chapter-label tech-font"><span>03 / THE COCKPIT</span><span>A QUIETER PERSPECTIVE</span></div>
     <div className="scene-opening scene-heading"><h2 id="cockpit-title" className="display-font">CRAFTED AROUND<br />THE DRIVER.</h2></div>

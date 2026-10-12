@@ -7,7 +7,7 @@ export function PresenceExperience({ onOpenVideoModal }: { onOpenVideoModal?: (s
   const root = useRef<HTMLElement>(null)
   const controller = useCinematicScene(root, presenceManifest, 'presence')
   return <section ref={root} id="presence" className="cinematic-stage cinematic-presence chapter" aria-labelledby="presence-title">
-    <ScrollImageSequence controllerRef={controller} manifest={presenceManifest} poster={presenceManifest.poster} alt={presenceManifest.alt} fit="cover" className="scene-media" />
+    <ScrollImageSequence controllerRef={controller} manifest={presenceManifest} poster={presenceManifest.poster} alt={presenceManifest.alt} fit="contain" className="scene-media" />
     <div className="scene-shade" aria-hidden="true" />
     <div className="scene-chapter-label tech-font"><span>02 / THE GOLDEN REVEAL</span><span>SYAHMIAOF / VISUAL STUDY</span></div>
     <div className="scene-opening scene-heading"><h2 id="presence-title" className="display-font">SCULPTED<br />FOR SPEED.</h2><p>A study in black, gold and proportion.</p></div>

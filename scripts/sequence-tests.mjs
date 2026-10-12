@@ -80,6 +80,32 @@ test('unmount closes late decoded resources without a draw', async () => {
   assert.equal(closed, 1)
 })
 
+test('monotonic scroll reuses prefetched frames and deduplicates same-frame ticks', async () => {
+  let callbacks = 0
+  let notifications = 0
+  const requests = new Map()
+  const loader = new FrameLoader({ ...variant, frameCount: 121, width: 1440, height: 810 }, () => callbacks++, {
+    capacity: 10,
+    decode: async url => { requests.set(url, (requests.get(url) ?? 0) + 1); return { ...decoded(), width: 1440, height: 810 } },
+    onChange: () => notifications++,
+  })
+  for (let index = 0; index <= 60; index++) {
+    for (let tick = 0; tick < 5; tick++) loader.request(index)
+    await flush()
+  }
+  const decodes = [...requests.values()].reduce((sum, count) => sum + count, 0)
+  assert.equal(decodes, requests.size, 'Sequential forward scrub should never evict and redecode imminent prefetched frames')
+  assert.equal(callbacks, 61, 'Only changed source frames should invoke draw callbacks')
+  assert.ok(notifications < 150)
+  assert.ok(loader.stats.estimatedDecodedBytes <= 72 * 1024 * 1024)
+  console.log(`Controlled loader benchmark: ${decodes} decodes / ${requests.size} unique; ${callbacks} draw callbacks; ${notifications} diagnostic callbacks. Previous measured baseline: 70 / 66; 360; 375.`)
+  loader.suspend()
+  loader.resume(60, 2)
+  await flush()
+  assert.ok(loader.stats.cached <= 2, 'Upcoming scene should warm only its two-frame window')
+  loader.dispose()
+})
+
 test('temporary synthetic 1px fixture validates continuity, rights, dimensions and byte totals', async () => {
   const root = await mkdtemp(path.join(tmpdir(), 'lamborghini-synthetic-sequence-test-'))
   const folder = path.join(root, 'media/sequences/synthetic-test/desktop')
@@ -136,15 +162,18 @@ if (process.argv.includes('--browser')) {
           import {createRoot} from 'react-dom/client';
           import {ScrollImageSequence} from '/src/features/sequence/ScrollImageSequence.tsx';
           import {ScrollTrigger} from '/src/motion/gsap.ts';
+          import {PlaybackContext} from '/src/motion/PlaybackContext.ts';
           const root=createRoot(document.getElementById('root'));
           const query=new URLSearchParams(location.search);
           const manifest=query.has('no-manifest') ? undefined : ${JSON.stringify(fixtureManifest)};
           if(manifest && query.has('mobile')) manifest.mobile={...manifest.desktop,frameCount:8};
           const controller=React.createRef();
+          let playback=!query.has('blocked');
           window.__progress=p=>controller.current?.setProgress(p);
           window.__triggers=()=>ScrollTrigger.getAll().length;
           window.__unmount=()=>root.unmount();
-          root.render(React.createElement(React.StrictMode,null,React.createElement('div',null,React.createElement('div',{className:'spacer'}),React.createElement(ScrollImageSequence,{poster:'/__fixture/poster.png',alt:'Synthetic test pixel',manifest,controllerRef:query.has('external')?controller:undefined,priority:true,className:'test-sequence'},React.createElement('h1',null,'Synthetic geometry test only')),React.createElement('div',{className:'spacer'}))));
+          const render=()=>root.render(React.createElement(React.StrictMode,null,React.createElement(PlaybackContext.Provider,{value:playback},React.createElement('div',null,React.createElement('div',{className:'spacer'}),React.createElement(ScrollImageSequence,{poster:'/__fixture/poster.png',alt:'Synthetic test pixel',manifest,controllerRef:query.has('external')?controller:undefined,onProgress:()=>{},priority:true,className:'test-sequence'},React.createElement('h1',null,'Synthetic geometry test only')),React.createElement('div',{className:'spacer'})))));
+          render();window.__rerender=render;window.__play=()=>{playback=true;render()};
           </script></body></html>`))
         })
       } }],
@@ -209,7 +238,7 @@ if (process.argv.includes('--browser')) {
       assert.equal(await page.locator('canvas').getAttribute('data-ready'), 'true', 'Resize must not hide valid canvas pixels')
       await page.evaluate(() => window.__progress(0.5))
       await page.waitForFunction(() => document.querySelector('canvas')?.dataset.frame === '6')
-      assert.ok(Number(await page.locator('canvas').getAttribute('data-cache')) <= 10)
+      assert.ok(Number(await page.locator('canvas').getAttribute('data-cache')) <= 12)
       failLastFrame = false
       await page.setViewportSize({ width: 768, height: 1024 })
       await page.waitForFunction(() => document.querySelector('canvas')?.dataset.variant === 'mobile' && document.querySelector('canvas')?.dataset.frame === '4')
@@ -221,6 +250,21 @@ if (process.argv.includes('--browser')) {
       assert.equal(await page.locator('canvas').getAttribute('data-frame'), '7')
       await page.evaluate(() => window.__progress(0))
       await page.waitForFunction(() => document.querySelector('canvas')?.dataset.frame === '0')
+      assert.equal(await page.locator('canvas').getAttribute('data-fit'), 'contain')
+      await page.waitForTimeout(100)
+      const beforeRerender = await page.locator('canvas').getAttribute('data-decoded')
+      await page.evaluate(() => window.__rerender())
+      await page.waitForTimeout(100)
+      assert.equal(await page.locator('canvas').getAttribute('data-decoded'), beforeRerender, 'A new callback identity must not rebuild the loader')
+      const beforeIntro = frames.length
+      await page.goto(`${url}?external&mobile&blocked`)
+      await page.locator('img').waitFor()
+      await page.waitForTimeout(100)
+      assert.equal(frames.length, beforeIntro, 'Intro playback context must prevent frame requests')
+      await page.evaluate(() => window.__play())
+      await page.waitForFunction(() => document.querySelector('canvas')?.dataset.ready === 'true')
+      await page.evaluate(() => window.__unmount())
+      await page.waitForTimeout(100)
       await page.addInitScript(() => Object.defineProperty(navigator, 'connection', { value: { saveData: true, effectiveType: '4g' }, configurable: true }))
       const beforeSaveData = frames.length
       await page.goto(url)

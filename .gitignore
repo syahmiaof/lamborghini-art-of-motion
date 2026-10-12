@@ -7,3 +7,7 @@ recovery-backups/
 *.log
 .DS_Store
 references/licensed-originals/
+
+.vercel
+*.png
+!public/**/*.png

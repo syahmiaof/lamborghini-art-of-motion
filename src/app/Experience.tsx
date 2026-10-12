@@ -177,7 +177,7 @@ function ResponsiveImage({
   )
 }
 
-export function Experience() {
+export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; onReplayIntro?: () => void }) {
   const root = useRef<HTMLElement>(null)
   const lineupWrapper = useRef<HTMLDivElement>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
@@ -204,8 +204,9 @@ export function Experience() {
   const [btnText, setBtnText] = useState('REQUEST TEST DRIVE')
   const [btnSubmitted, setBtnSubmitted] = useState(false)
 
-  // 1. Initialize Lenis Smooth Scrolling with GSAP Ticker Synchronization & Reduced Motion Guard
+  // One ticker owns wheel smoothing; touch input remains native.
   useEffect(() => {
+    if (!ready) return
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) {
       document.documentElement.setAttribute('data-motion', 'reduced')
@@ -269,7 +270,7 @@ export function Experience() {
       bindScrollController(null)
       lenis.destroy()
     }
-  }, [])
+  }, [ready])
 
   // 2. Escape key closes Quick View modal
   useEffect(() => {
@@ -284,6 +285,7 @@ export function Experience() {
 
   // 3. GSAP Animations with Responsive & Reduced-Motion Adaptations
   useGSAP(() => {
+    if (!ready) return
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) {
       // In reduced motion mode, reveal elements immediately without transforms
@@ -455,7 +457,7 @@ export function Experience() {
     ScrollTrigger.sort()
     ScrollTrigger.refresh()
     return () => lineupMedia.revert()
-  }, { scope: root, revertOnUpdate: true })
+  }, { scope: root, dependencies: [ready], revertOnUpdate: true })
 
   // Magnetic Button Handlers
   function handleMagneticMove(e: MouseEvent<HTMLButtonElement>) {
@@ -549,11 +551,9 @@ export function Experience() {
             <span>01 REVEAL</span>
             <span className="hud-link-bar" />
           </a>
-          <a href="#awakening" className="hud-link">01 AWAKENING</a>
-          <a href="#presence" className="hud-link">02 FORM</a>
           <a href="#showroom" className="hud-link">SHOWROOM</a>
           <a href="#benchmarks" className="hud-link">BENCHMARKS</a>
-          <a href="#gallery" className="hud-link">03 COCKPIT</a>
+          <a href="#gallery" className="hud-link">CRAFTSMANSHIP</a>
           <a href="#inventory" className="hud-link">INVENTORY</a>
           <a href="#experience" className="hud-link">TEST DRIVE</a>
           <button type="button" className="hud-search-btn" aria-label="Search">
@@ -1136,6 +1136,7 @@ export function Experience() {
       )}
 
       <footer className="page-footer tech-font" role="contentinfo">
+        {onReplayIntro && <button className="replay-intro" onClick={onReplayIntro}>Replay the opening film</button>}
         <p>Independent Concept Experience Â· Not Affiliated with Automobili Lamborghini S.p.A. Â· Photography licensed under Creative Commons</p>
       </footer>
 

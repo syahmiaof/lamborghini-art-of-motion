@@ -156,9 +156,9 @@ h1, h2, h3, .display-font {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 80% 54%;
+    object-position: 85% 48%;
     transform: scale(1.0);
-    filter: contrast(1.08) brightness(1.04) saturate(1.1);
+    filter: contrast(1.08) brightness(1.02) saturate(1.08);
     transition: transform 1.2s ease-out;
 }
 
@@ -167,9 +167,9 @@ h1, h2, h3, .display-font {
     inset: 0;
     /* Controlled Chiaroscuro overlays matching mockup */
     background: 
-        linear-gradient(90deg, rgba(6, 6, 6, 0.95) 0%, rgba(6, 6, 6, 0.82) 28%, rgba(6, 6, 6, 0.38) 48%, rgba(6, 6, 6, 0.02) 68%, transparent 100%),
-        linear-gradient(0deg, rgba(6, 6, 6, 0.95) 0%, rgba(6, 6, 6, 0.65) 15%, rgba(6, 6, 6, 0.1) 28%, transparent 42%),
-        linear-gradient(180deg, rgba(6, 6, 6, 0.85) 0%, rgba(6, 6, 6, 0.2) 12%, transparent 22%);
+        linear-gradient(90deg, rgba(6, 6, 6, 0.96) 0%, rgba(6, 6, 6, 0.86) 28%, rgba(6, 6, 6, 0.42) 48%, rgba(6, 6, 6, 0.04) 68%, transparent 100%),
+        linear-gradient(0deg, rgba(6, 6, 6, 0.92) 0%, rgba(6, 6, 6, 0.55) 14%, rgba(6, 6, 6, 0.05) 26%, transparent 40%),
+        linear-gradient(180deg, rgba(6, 6, 6, 0.8) 0%, rgba(6, 6, 6, 0.15) 12%, transparent 22%);
     pointer-events: none;
     z-index: 2;
 }
@@ -177,8 +177,8 @@ h1, h2, h3, .display-font {
 /* TOP-RIGHT ANNOTATION */
 .hero-annotation {
     position: absolute;
-    top: clamp(86px, 16vh, 120px);
-    right: clamp(1.5rem, 5vw, 5rem);
+    top: clamp(92px, 14vh, 126px);
+    right: clamp(1.5rem, 5vw, 5.5rem);
     z-index: 15;
     display: flex;
     align-items: flex-start;
@@ -211,7 +211,8 @@ h1, h2, h3, .display-font {
 .annotation-model {
     font-size: 0.72rem;
     letter-spacing: 0.22em;
-    color: #D8D8D2;
+    color: #E2E2DC;
+    font-weight: 600;
 }
 .annotation-spec {
     font-size: 0.65rem;
@@ -225,13 +226,13 @@ h1, h2, h3, .display-font {
     z-index: 10;
     padding-left: clamp(2rem, 5vw, 5.5rem);
     padding-right: 2rem;
-    max-width: 680px;
+    max-width: 820px;
     width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: -5vh; /* Gives ample breathing room above bottom infographic strip */
+    margin-top: -4vh; /* Gives ample breathing room above bottom infographic strip */
 }
 
 .hero-eyebrow {
@@ -243,42 +244,45 @@ h1, h2, h3, .display-font {
     color: var(--accent-gold);
     margin-bottom: 1rem;
     text-transform: uppercase;
+    font-weight: 500;
 }
 .eyebrow-line {
-    width: 24px;
+    width: 28px;
     height: 1px;
     background: var(--accent-gold);
     display: inline-block;
 }
 
 .hero-title {
-    font-size: clamp(2.3rem, 4.6vw, 5.2rem);
+    font-size: clamp(2.4rem, 4.8vw, 5.4rem);
     line-height: 0.9;
     margin-bottom: 0.75rem;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
-    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95), 0 2px 10px rgba(0, 0, 0, 0.8);
-    letter-spacing: -0.03em;
+    letter-spacing: -0.015em;
     white-space: nowrap;
-    color: #FFFFFF;
 }
 
 .hero-title .char {
     display: inline-block;
     transform: translateY(100%);
+    background: linear-gradient(180deg, #FFFFFF 15%, #E6E6E2 52%, #ABABAB 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 22px rgba(0, 0, 0, 0.9));
 }
 
 .hero-subtitle {
-    font-size: clamp(0.85rem, 1.45vw, 1.15rem);
-    letter-spacing: 0.32em;
+    font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+    letter-spacing: 0.35em;
     color: var(--accent-gold);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
     margin-bottom: 0.6rem;
     font-weight: 700;
 }
 
 .hero-underline-accent {
-    width: 38px;
+    width: 44px;
     height: 2px;
     background: var(--accent-gold);
     margin-bottom: 1.25rem;
@@ -481,14 +485,15 @@ h1, h2, h3, .display-font {
 
 /* BOTTOM-RIGHT BESPOKE EDITION PANEL */
 .hero-edition-panel {
-    border: 1px solid rgba(200, 169, 81, 0.35);
-    background: rgba(8, 8, 8, 0.65);
-    backdrop-filter: blur(8px);
-    padding: 0.85rem 1.4rem;
+    border: 1px solid rgba(200, 169, 81, 0.4);
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0.75rem 1.3rem;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 .edition-row {
     display: flex;
@@ -1427,44 +1432,107 @@ select.form-input {
     }
 }
 
+@media (min-width: 769px) and (max-width: 1100px) {
+    .hero-infographic-strip {
+        bottom: 1.5rem;
+        left: 2rem;
+        right: 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    .hero-edition-panel {
+        align-self: flex-end;
+    }
+    .metrics-group {
+        gap: 1.1rem;
+    }
+    .metric-val {
+        font-size: 1.15rem;
+    }
+    .hero-title {
+        font-size: clamp(2.2rem, 5.2vw, 3.8rem);
+    }
+}
+
 @media (max-width: 768px) {
     .hero {
         min-height: 100vh;
         height: 100vh;
+        overflow: hidden;
     }
-    .hero-phase-badge {
-        top: 5.5rem;
-        left: 1.5rem;
-        right: 1.5rem;
+    .hero-bg-img {
+        object-position: 74% 45%;
+        opacity: 0.65;
     }
-    .hero-editorial-center {
-        top: 50%;
-        left: 1.5rem;
-        right: 1.5rem;
-        transform: translateY(-50%);
-        max-width: calc(100% - 3rem);
+    .hero-content {
+        padding: 4.5rem 1.25rem 7.5rem;
+        max-width: 100%;
+        margin-top: 0;
     }
     .hero-title {
-        font-size: clamp(1.9rem, 8.5vw, 3.2rem);
+        font-size: clamp(2rem, 9.2vw, 3.4rem);
+        white-space: normal;
+        flex-wrap: wrap;
     }
-    .hero-resolved-card {
-        bottom: 2rem;
-        left: 1.5rem;
-        right: 1.5rem;
-        max-width: calc(100% - 3rem);
+    .hero-subtitle {
+        font-size: 0.85rem;
+        letter-spacing: 0.24em;
+    }
+    .hero-copy {
+        font-size: 0.92rem;
+        max-width: 100%;
+        margin-bottom: 1.25rem;
     }
     .hero-cta-group {
         flex-direction: column;
         align-items: stretch;
         gap: 0.65rem;
+        width: 100%;
     }
     .hero-btn-primary,
-    .hero-btn-secondary,
-    .hero-btn-video {
+    .hero-btn-secondary {
         width: 100%;
         justify-content: center;
         text-align: center;
         box-sizing: border-box;
+    }
+    .hero-annotation {
+        top: 4.75rem;
+        right: 1.25rem;
+    }
+    .hero-edition-panel {
+        display: none;
+    }
+    .hero-infographic-strip {
+        bottom: 1.25rem;
+        left: 1.25rem;
+        right: 1.25rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+    .scroll-indicator {
+        display: none;
+    }
+    .hero-strip-left {
+        width: 100%;
+        gap: 0;
+    }
+    .metrics-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem 1rem;
+        width: 100%;
+    }
+    .metric-divider {
+        display: none;
+    }
+    .metric-item {
+        gap: 0.5rem;
+    }
+    .metric-val {
+        font-size: 1.15rem;
     }
 }
 

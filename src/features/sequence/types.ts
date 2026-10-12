@@ -62,5 +62,7 @@ export function supportsSequencePlayback(manifest: SequenceManifest | undefined)
   if (typeof window === 'undefined' || !isPlayableManifest(manifest) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
   const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
   if (connection?.saveData || /^(slow-2g|2g)$/.test(connection?.effectiveType ?? '')) return false
-  return window.innerWidth >= 900 || isPlayableVariant(manifest.mobile)
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
+  if (memory && memory <= 1) return false
+  return (window.innerWidth >= 900 && (!memory || memory > 2)) || isPlayableVariant(manifest.mobile)
 }

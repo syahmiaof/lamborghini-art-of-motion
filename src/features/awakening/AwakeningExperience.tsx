@@ -13,7 +13,7 @@ export function AwakeningExperience({ onOpenVideoModal }: { onOpenVideoModal?: (
         manifest={awakeningManifest}
         poster={awakeningManifest.poster}
         alt={awakeningManifest.alt}
-        fit="cover"
+        fit="contain"
         className="scene-media"
       />
       <div className="scene-shade" aria-hidden="true" />

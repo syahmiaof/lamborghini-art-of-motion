@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Experience } from './app/Experience'
+import { ExperienceShell } from './app/ExperienceShell'
 import './styles/tokens.css'
 import './styles/base.css'
 import '@fontsource/barlow-condensed/latin-600.css'
@@ -18,6 +18,6 @@ if (!root) {
 
 createRoot(root).render(
   <StrictMode>
-    <Experience />
+    <ExperienceShell />
   </StrictMode>,
 )

@@ -1,0 +1,202 @@
+/* Premium CTA / Inquiry Section */
+.section-cta {
+  padding: clamp(60px, 8vw, 120px) 0 40px;
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-base);
+}
+
+.cta-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+  padding: 0 var(--page-gutter);
+}
+
+.cta-text h3 {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  margin: 0.6rem 0 1.25rem;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+
+.cta-text p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+.cta-disclaimer-card {
+  margin-top: 2.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--accent-gold);
+  font-size: 0.75rem;
+  max-width: 480px;
+}
+
+.cta-disclaimer-card p {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.cta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  justify-content: center;
+}
+
+.form-group {
+  position: relative;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 1rem 0;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  transition: border-color 0.3s ease;
+  border-radius: 0;
+}
+
+.form-input:focus {
+  outline: none;
+  border-bottom-color: var(--accent-gold);
+}
+
+.form-input.is-invalid {
+  border-bottom-color: var(--accent-red);
+}
+
+.form-input::placeholder {
+  color: var(--text-secondary);
+  font-family: var(--font-tech);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+select.form-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C8A951' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.2em;
+  cursor: pointer;
+}
+
+select.form-input option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 0.5rem;
+}
+
+.form-error {
+  display: block;
+  color: var(--accent-red);
+  font-size: 0.75rem;
+  margin-top: 0.4rem;
+}
+
+.btn-magnetic-wrapper {
+  margin-top: 1rem;
+  display: inline-block;
+  width: 100%;
+}
+
+.btn-submit {
+  width: 100%;
+  background: var(--accent-gold);
+  color: var(--bg-base);
+  border: none;
+  padding: 1.4rem;
+  font-family: var(--font-tech);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  position: relative;
+  display: block;
+  text-align: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #fff;
+  color: #000;
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success State */
+.cta-success {
+  padding: 2.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--accent-gold);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cta-success__badge {
+  color: var(--accent-gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.cta-success h4 {
+  font-size: 1.8rem;
+}
+
+.cta-success p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.cta-success__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+}
+
+.cta-success__summary span {
+  color: var(--text-secondary);
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .cta-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}

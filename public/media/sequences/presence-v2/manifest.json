@@ -1,0 +1,28 @@
+{
+  "id": "presence-v2",
+  "assetRegisterId": "ASSET-PARKING-SWEEP-002",
+  "rightsStatus": "approved",
+  "derivativeFramesAllowed": true,
+  "poster": "/media/sequences/presence-v2/poster.webp",
+  "alt": "User-supplied generated custom supercar concept: exterior camera sweep revealing gold wheels and syahmiaof side livery",
+  "desktop": {
+    "frameCount": 121,
+    "width": 1440,
+    "height": 810,
+    "extension": "webp",
+    "urlTemplate": "/media/sequences/presence-v2/desktop/frame_{frame}.webp",
+    "totalBytes": 9796378,
+    "startIndex": 1,
+    "padLength": 4
+  },
+  "mobile": {
+    "frameCount": 121,
+    "width": 768,
+    "height": 432,
+    "extension": "webp",
+    "urlTemplate": "/media/sequences/presence-v2/mobile/frame_{frame}.webp",
+    "totalBytes": 3882604,
+    "startIndex": 1,
+    "padLength": 4
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "presence-v1",
+  "assetRegisterId": "ASSET-PARKING-SWEEP-002",
+  "rightsStatus": "approved",
+  "derivativeFramesAllowed": true,
+  "poster": "/media/sequences/presence-v1/poster.webp",
+  "alt": "Black and gold supercar front three-quarter to side profile camera sweep",
+  "desktop": {
+    "frameCount": 48,
+    "width": 1440,
+    "height": 810,
+    "extension": "webp",
+    "urlTemplate": "/media/sequences/presence-v1/desktop/frame_{frame}.webp",
+    "totalBytes": 3366602
+  }
+}

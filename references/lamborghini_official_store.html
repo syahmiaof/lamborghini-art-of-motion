@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en" class="lenis lenis-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamborghini Official Store | Maximalist E-Commerce</title>
+    
+    <!-- Typography Strategy: Anti-AI Defaults -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Palette: Lamborghini Inspired, No Indigo/Cyan */
+            --bg-base: #0A0A0A;
+            --bg-surface: #141414;
+            --accent-gold: #C8A951;
+            --accent-red: #FF3B00;
+            --text-primary: #F5F5F0;
+            --text-secondary: #8A8A8A;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            
+            /* Typography */
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-tech: 'JetBrains Mono', monospace;
+            
+            /* Structural */
+            --section-padding: clamp(4rem, 8vw, 8rem);
+        }
+
+        /* CSS Reset & Baseline */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-smooth iframe {
+            pointer-events: none;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+
+        /* Typography System */
+        h1, h2, h3, .display-font {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 0.85;
+        }
+        .tech-font {
+            font-family: var(--font-tech);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        /* Core Utilities */
+        .container {
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .gold-text { color: var(--accent-gold); }
+        .red-text { color: var(--accent-red); }
+        
+        /* Placeholder Engine */
+        .image-placeholder {
+            position: relative;
+            background: linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+        .image-placeholder::after {
+            content: attr(data-annotation);
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            font-family: var(--font-tech);
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            z-index: 2;
+            background: rgba(10, 10, 10, 0.75);
+            padding: 0.3rem 0.6rem;
+            border-left: 2px solid var(--accent-gold);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+        }
+        .image-placeholder img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        .glow-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(200,169,81,0.08) 0%, transparent 70%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* SECTION 1: HERO */
+        .hero {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 4fr 6fr;
+            border-bottom: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: clamp(2rem, 5vw, 6rem);
+            padding-right: 2rem;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-size: clamp(4rem, 11vw, 10rem);
+            margin-bottom: 1rem;
+            overflow: hidden; /* For stagger reveal */
+            display: flex;
+        }
+        
+        .hero-title .char {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+
+        .hero-subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--accent-gold);
+            margin-bottom: 2rem;
+            opacity: 0;
+        }
+
+        .hero-hr {
+            height: 1px;
+            width: 0px;
+            background-color: var(--accent-gold);
+            margin-bottom: 2rem;
+        }
+
+        .hero-copy {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            opacity: 0;
+        }
+
+        .hero-right {
+            position: relative;
+            height: 100vh;
+            border-left: 1px solid var(--border-subtle);
+            opacity: 0;
+        }
+        .hero-right .image-placeholder {
+            height: 100%;
+            border: none;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: clamp(2rem, 5vw, 6rem);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            z-index: 20;
+        }
+        .scroll-indicator span {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: var(--border-subtle);
+            position: relative;
+            overflow: hidden;
+        }
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 50%;
+            background: var(--accent-gold);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+        @keyframes scrollLine {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(200%); }
+        }
+
+        /* SECTION 2: LINEUP (Horizontal) */
+        .section-lineup {
+            overflow: hidden;
+            background: var(--bg-base);
+        }
+        .horizontal-scroll-wrapper {
+            display: flex;
+            width: 300vw;
+            height: 100vh;
+        }
+        .model-panel {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 2fr 5fr 3fr;
+            align-items: center;
+            border-right: 1px solid var(--border-subtle);
+            position: relative;
+        }
+        
+        .panel-name {
+            font-size: clamp(3rem, 7vw, 7rem);
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+            padding: 2rem;
+            color: rgba(255,255,255,0.05);
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            transition: color 0.5s ease;
+        }
+        .model-panel:hover .panel-name {
+            color: var(--text-primary);
+            -webkit-text-stroke: 0px;
+        }
+
+        .panel-image {
+            height: 60vh;
+            width: 100%;
+        }
+
+        .panel-specs {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 1rem;
+        }
+        .spec-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .spec-val {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .panel-price {
+            position: absolute;
+            bottom: 4rem;
+            right: 4rem;
+            text-align: right;
+        }
+        .price-val {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: var(--accent-gold);
+        }
+        .price-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        /* SECTION 3: SPEC BARS */
+        .section-bars {
+            padding: var(--section-padding) 0;
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-subtle);
+        }
+        .bar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+        .bar-group {
+            width: 100%;
+        }
+        .bar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-family: var(--font-tech);
+        }
+        .bar-label { font-size: 0.85rem; letter-spacing: 0.1em; }
+        .bar-value { font-size: 0.85rem; color: var(--accent-gold); }
+        
+        .bar-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            position: relative;
+        }
+        .bar-fill {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-red));
+            transform-origin: left;
+            transform: scaleX(0);
+            box-shadow: 0 0 15px rgba(200,169,81,0.3);
+        }
+
+        /* SECTION 4: GALLERY */
+        .section-gallery {
+            padding: var(--section-padding) 0;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 6rem;
+        }
+        .gallery-grid {
+            display: grid;
+            gap: 2rem;
+            padding: 0 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        .gallery-row {
+            display: grid;
+            gap: 2rem;
+            align-items: center;
+        }
+        /* Asymmetric ratios */
+        .row-1 { grid-template-columns: 6fr 4fr; }
+        .row-2 { grid-template-columns: 4fr 6fr; }
+        .row-3 { grid-template-columns: 1fr; }
+
+        .gallery-img {
+            width: 100%;
+            height: 600px;
+            clip-path: inset(100% 0 0 0); /* For reveal animation */
+        }
+        .row-3 .gallery-img { height: 80vh; }
+
+        .gallery-text {
+            padding: 3rem;
+        }
+        .gallery-text h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .gallery-text p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 400px;
+        }
+        .gallery-text .tech-stats {
+            border-left: 1px solid var(--accent-gold);
+            padding-left: 1.5rem;
+        }
+
+        /* SECTION 5: INVENTORY */
+        .section-inventory {
+            padding: var(--section-padding) 0;
+            background: var(--bg-surface);
+            position: relative;
+        }
+        
+        .filter-bar {
+            position: sticky;
+            top: 2rem;
+            z-index: 50;
+            margin: 0 auto 4rem;
+            width: fit-content;
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            font-family: var(--font-tech);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover {
+            border-color: var(--accent-gold);
+        }
+        .filter-btn.active {
+            background: var(--accent-gold);
+            color: var(--bg-base);
+            font-weight: 700;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1px; /* create borders via grid gap */
+            background: var(--border-subtle);
+            border: 1px solid var(--border-subtle);
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .inventory-card {
+            background: var(--bg-surface);
+            padding: 2rem;
+            position: relative;
+            transition: box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .inventory-card:hover {
+            box-shadow: inset 0 0 0 1px var(--accent-gold);
+            z-index: 2;
+        }
+        
+        .card-img {
+            height: 250px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .inventory-card:hover .card-img img {
+            transform: scale(1.05);
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .card-title {
+            font-size: 1.4rem;
+        }
+        .card-variant {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        .card-price {
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            font-family: var(--font-tech);
+        }
+        
+        .quick-view {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-base);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 1rem 2rem;
+            font-family: var(--font-tech);
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .inventory-card:hover .quick-view {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* SECTION 6: CTA */
+        .section-cta {
+            padding: clamp(6rem, 12vw, 12rem) 2rem;
+            background: var(--bg-base);
+        }
+        .cta-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        .cta-text h2 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            margin-bottom: 1rem;
+        }
+        .cta-text p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 400px;
+        }
+        
+        .cta-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .form-group {
+            position: relative;
+        }
+        .form-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 1rem 0;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-bottom-color: var(--accent-gold);
+        }
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            font-family: var(--font-tech);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        
+        select.form-input {
+            appearance: none;
+            border-radius: 0;
+        }
+
+        .btn-magnetic-wrapper {
+            margin-top: 1rem;
+            display: inline-block;
+        }
+        .btn-submit {
+            width: 100%;
+            background: var(--accent-gold);
+            color: var(--bg-base);
+            border: none;
+            padding: 1.5rem;
+            font-family: var(--font-tech);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            display: block;
+            text-align: center;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .hero { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+            .hero-left { padding: 6rem 2rem 2rem; }
+            .model-panel { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; padding: 2rem; }
+            .panel-name { writing-mode: horizontal-tb; transform: none; font-size: 4rem; padding: 0; }
+            .panel-specs { padding: 2rem 0; flex-direction: row; flex-wrap: wrap; }
+            .panel-price { position: relative; bottom: auto; right: auto; text-align: left; margin-top: 1rem; }
+            .cta-container { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .gallery-row { grid-template-columns: 1fr !important; }
+            .inventory-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-wrap: wrap; justify-content: center; top: 1rem; }
+            .horizontal-scroll-wrapper { width: 100vw; height: auto; flex-direction: column; }
+            .model-panel { height: auto; border-right: none; border-bottom: 1px solid var(--border-subtle); width: 100vw; }
+            .section-lineup { overflow: visible; } /* Disable horizontal scroll logic on mobile */
+        }
+
+        /* CSS Scroll-Driven Animations (Progressive Enhancement) */
+        @supports (animation-timeline: view()) {
+            .fade-in-section {
+                animation: fadeUp linear both;
+                animation-timeline: view();
+                animation-range: entry 0% cover 25%;
+            }
+            @keyframes fadeUp {
+                from { opacity: 0; transform: translateY(60px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: HERO -->
+    <section class="hero">
+        <div class="scroll-indicator">
+            <span class="tech-font">SCROLL</span>
+            <div class="scroll-line"></div>
+        </div>
+        <div class="hero-left">
+            <h1 class="hero-title display-font" aria-label="LAMBORGHINI" id="heroTitle">
+                <!-- Spans generated by JS -->
+            </h1>
+            <div class="hero-subtitle tech-font">OFFICIAL STORE</div>
+            <div class="hero-hr"></div>
+            <p class="hero-copy">Sant'Agata Bolognese. Since 1963.</p>
+        </div>
+        <div class="hero-right">
+            <div class="image-placeholder" data-annotation="[LAMBORGHINI REVUELTO — 3/4 FRONT VIEW]">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Lamborghini_Revuelto_at_IAA_2023_1.jpg/2560px-Lamborghini_Revuelto_at_IAA_2023_1.jpg" alt="Lamborghini Revuelto">
+                <div class="glow-bg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: MODEL LINEUP -->
+    <section class="section-lineup desktop-only-scroll">
+        <div class="horizontal-scroll-wrapper" id="lineupWrapper">
+            
+            <!-- Panel 1 -->
+            <div class="model-panel">
+                <div class="panel-name display-font">REVUELTO</div>
+                <div class="panel-image image-placeholder" data-annotation="[PROFILE — ARANCIO APODIS]">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lamborghini_Revuelto_1.jpg/1920px-Lamborghini_Revuelto_1.jpg" alt="Revuelto">
+                </div>
+                <div class="panel-specs">
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">ENGINE</span>
+                        <span class="spec-val">6.5L V12 Hybrid</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">POWER</span>
+                        <span class="spec-val">1001 CV</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">0-100 KM/H</span>
+                        <span class="spec-val">2.5s</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">TOP SPEED</span>
+                        <span class="spec-val">350 km/h</span>
+                    </div>
+                    <div class="panel-price">
+                        <div class="price-val display-font">$<span class="counter" data-target="673294">0</span></div>
+                        <span class="price-label tech-font">STARTING MSRP</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 2 -->
+            <div class="model-panel">
+                <div class="panel-name display-font">TEMERARIO</div>
+                <div class="panel-image image-placeholder" data-annotation="[PROFILE — VERDE MANTIS]">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Lamborghini_Huracan_Evo_Flou_Capsule_Front.jpg/1920px-Lamborghini_Huracan_Evo_Flou_Capsule_Front.jpg" alt="Temerario / Huracan Evo">
+                </div>
+                <div class="panel-specs">
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">ENGINE</span>
+                        <span class="spec-val">4.0L V8 Hybrid</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">POWER</span>
+                        <span class="spec-val">920 CV</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">0-100 KM/H</span>
+                        <span class="spec-val">2.7s</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">TOP SPEED</span>
+                        <span class="spec-val">343 km/h</span>
+                    </div>
+                    <div class="panel-price">
+                        <div class="price-val display-font">$<span class="counter" data-target="386649">0</span></div>
+                        <span class="price-label tech-font">STARTING MSRP</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3 -->
+            <div class="model-panel">
+                <div class="panel-name display-font">URUS</div>
+                <div class="panel-image image-placeholder" data-annotation="[PROFILE — BIANCO MONOCERUS]">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Lamborghini_Urus_14.05.18_JM_%282%29_%28cropped%29.jpg/1920px-Lamborghini_Urus_14.05.18_JM_%282%29_%28cropped%29.jpg" alt="Urus">
+                </div>
+                <div class="panel-specs">
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">ENGINE</span>
+                        <span class="spec-val">4.0L V8</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">POWER</span>
+                        <span class="spec-val">666 CV</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">0-100 KM/H</span>
+                        <span class="spec-val">3.3s</span>
+                    </div>
+                    <div class="spec-item tech-font">
+                        <span class="spec-label">TOP SPEED</span>
+                        <span class="spec-val">306 km/h</span>
+                    </div>
+                    <div class="panel-price">
+                        <div class="price-val display-font">$<span class="counter" data-target="280736">0</span></div>
+                        <span class="price-label tech-font">STARTING MSRP</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: SPEC BARS -->
+    <section class="section-bars">
+        <h2 class="section-title display-font">ENGINEERING PEX</h2>
+        <div class="bar-container">
+            <div class="bar-group">
+                <div class="bar-header">
+                    <span class="bar-label">SYSTEM HORSEPOWER</span>
+                    <span class="bar-value">100%</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" data-fill="100%"></div>
+                </div>
+            </div>
+            
+            <div class="bar-group">
+                <div class="bar-header">
+                    <span class="bar-label">COMBINED TORQUE</span>
+                    <span class="bar-value">85%</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" data-fill="85%"></div>
+                </div>
+            </div>
+            
+            <div class="bar-group">
+                <div class="bar-header">
+                    <span class="bar-label">AERODYNAMIC DOWNFORCE</span>
+                    <span class="bar-value">92%</span>
+                </div>
+                <div class="bar-track">
+                    <div class="bar-fill" data-fill="92%"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: GALLERY -->
+    <section class="section-gallery">
+        <h2 class="section-title display-font">VISUAL TENSION</h2>
+        <div class="gallery-grid">
+            
+            <div class="gallery-row row-1 fade-in-section">
+                <div class="gallery-img image-placeholder" data-annotation="[INTERIOR DETAIL — CARBON FIBER]">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/2019_Lamborghini_Aventador_SVJ_Interior.jpg/1920px-2019_Lamborghini_Aventador_SVJ_Interior.jpg" alt="Interior Detail">
+                </div>
+                <div class="gallery-text">
+                    <h3 class="display-font">FEEL THE TARMAC</h3>
+                    <p>Monocoque chassis crafted entirely from forged composites. The connection between driver and machine, unfiltered.</p>
+                    <div class="tech-stats tech-font">
+                        <div>CHASSIS: MONOFUSELAGE</div>
+                        <div class="gold-text">MATERIAL: FORGED CARBON</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-row row-2 fade-in-section">
+                <div class="gallery-text">
+                    <h3 class="display-font">HYBRID KINETICS</h3>
+                    <p>Electric motors integrated seamlessly with naturally aspirated combustion. Silent precision meets violent acceleration.</p>
+                    <div class="tech-stats tech-font">
+                        <div>BATTERY: 3.8 kWh LITHIUM-ION</div>
+                        <div class="gold-text">MOTORS: 3X AXIAL FLUX</div>
+                    </div>
+                </div>
+                <div class="gallery-img image-placeholder" data-annotation="[POWERTRAIN — V12 HYBRID EXPOSED]">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Lamborghini_Aventador_V12_engine.jpg/1920px-Lamborghini_Aventador_V12_engine.jpg" alt="Engine Bay">
+                </div>
+            </div>
+            
+            <div class="gallery-row row-3 fade-in-section">
+                <div class="gallery-img image-placeholder" data-annotation="[WIDE SHOT — DYNAMIC DRIFT]">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Lamborghini_Hurac%C3%A1n_LP610-4_%2822162602766%29.jpg/1920px-Lamborghini_Hurac%C3%A1n_LP610-4_%2822162602766%29.jpg" alt="Wide Shot">
+                    <div class="glow-bg" style="background: radial-gradient(circle at 80% 80%, rgba(255,59,0,0.15) 0%, transparent 60%);"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 5: INVENTORY -->
+    <section class="section-inventory">
+        <h2 class="section-title display-font">AVAILABLE INVENTORY</h2>
+        
+        <div class="filter-bar" id="inventoryFilters">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="REVUELTO">REVUELTO</button>
+            <button class="filter-btn" data-filter="TEMERARIO">TEMERARIO</button>
+            <button class="filter-btn" data-filter="URUS">URUS</button>
+            <button class="filter-btn" data-filter="HYBRID">HYBRID</button>
+            <button class="filter-btn" data-filter="V12">V12</button>
+        </div>
+
+        <div class="inventory-grid" id="inventoryGrid">
+            <!-- Rendered via JS -->
+        </div>
+    </section>
+
+    <!-- SECTION 6: CTA -->
+    <section class="section-cta">
+        <div class="cta-container">
+            <div class="cta-text">
+                <h2 class="display-font section-title" style="text-align: left; margin-bottom: 2rem;">EXPERIENCE IT.</h2>
+                <p>Book a private test drive at your nearest Lamborghini showroom. Availability is strictly limited.</p>
+            </div>
+            <div class="cta-form">
+                <div class="form-group cta-field">
+                    <input type="text" class="form-input" placeholder="FULL NAME" required>
+                </div>
+                <div class="form-group cta-field">
+                    <input type="email" class="form-input" placeholder="EMAIL ADDRESS" required>
+                </div>
+                <div class="form-group cta-field">
+                    <select class="form-input tech-font">
+                        <option value="">SELECT MODEL</option>
+                        <option value="revuelto">REVUELTO</option>
+                        <option value="temerario">TEMERARIO</option>
+                        <option value="urus">URUS SE</option>
+                    </select>
+                </div>
+                <div class="btn-magnetic-wrapper cta-field">
+                    <button class="btn-submit magnetic-btn" id="submitBtn">REQUEST TEST DRIVE</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXTERNAL LIBRARIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+    <script>
+        const inventoryData = [
+            { model: "Revuelto", year: 2026, price: 673294, spec: "V12 Hybrid", color: "Grigio Titans", tags: ["REVUELTO", "HYBRID", "V12"], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Lamborghini_Revuelto_at_IAA_2023_1.jpg/800px-Lamborghini_Revuelto_at_IAA_2023_1.jpg" },
+            { model: "Temerario", year: 2026, price: 386649, spec: "V8 Hybrid", color: "Verde Mantis", tags: ["TEMERARIO", "HYBRID"], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Lamborghini_Huracan_Evo_Flou_Capsule_Front.jpg/800px-Lamborghini_Huracan_Evo_Flou_Capsule_Front.jpg" },
+            { model: "Urus SE", year: 2026, price: 280736, spec: "V8 Hybrid", color: "Nero Noctis", tags: ["URUS", "HYBRID"], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/2018_Lamborghini_Urus_Front.jpg/800px-2018_Lamborghini_Urus_Front.jpg" },
+            { model: "Revuelto", year: 2025, price: 612858, spec: "V12 Hybrid", color: "Arancio Borealis", tags: ["REVUELTO", "HYBRID", "V12"], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lamborghini_Revuelto_1.jpg/800px-Lamborghini_Revuelto_1.jpg" },
+            { model: "Huracan", year: 2024, price: 350000, spec: "V10", color: "Blu Cepheus", tags: [], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Lamborghini_Hurac%C3%A1n_Performante_2_%282017-03-21%29.jpg/800px-Lamborghini_Hurac%C3%A1n_Performante_2_%282017-03-21%29.jpg" },
+            { model: "Urus", year: 2025, price: 261995, spec: "V8", color: "Bianco Monocerus", tags: ["URUS"], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Lamborghini_Urus_14.05.18_JM_%282%29_%28cropped%29.jpg/800px-Lamborghini_Urus_14.05.18_JM_%282%29_%28cropped%29.jpg" }
+        ];
+
+        const gridEl = document.getElementById('inventoryGrid');
+        
+        function renderInventory(filterTag = 'all') {
+            gridEl.innerHTML = '';
+            
+            const filtered = filterTag === 'all' 
+                ? inventoryData 
+                : inventoryData.filter(item => item.tags.includes(filterTag));
+                
+            filtered.forEach((car, index) => {
+                const formattedPrice = new Intl.NumberFormat('en-US').format(car.price);
+                const html = `
+                    <div class="inventory-card" style="animation: fadeUp 0.5s ease forwards ${index * 0.1}s; opacity: 0;">
+                        <div class="card-img image-placeholder" data-annotation="[${car.model.toUpperCase()} — ${car.color.toUpperCase()}]">
+                            <img src="${car.image}" alt="${car.model}">
+                        </div>
+                        <div class="card-meta">
+                            <div>
+                                <h4 class="card-title display-font">${car.model}</h4>
+                                <div class="card-variant tech-font">${car.year} // ${car.spec} // ${car.color}</div>
+                            </div>
+                            <div class="card-price">$${formattedPrice}</div>
+                        </div>
+                        <button class="quick-view">QUICK VIEW</button>
+                    </div>
+                `;
+                gridEl.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                renderInventory(e.target.dataset.filter);
+            });
+        });
+
+        // Initial Render
+        renderInventory();
+
+        // Initialize Smooth Scrolling (Lenis)
+        const lenis = new Lenis({
+            autoRaf: true,
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Hero Load Animation
+        const titleText = "LAMBORGHINI";
+        const titleEl = document.getElementById('heroTitle');
+        titleText.split('').forEach(char => {
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.textContent = char;
+            titleEl.appendChild(span);
+        });
+
+        const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
+        
+        window.addEventListener('load', () => {
+            heroTl.to(".char", {
+                y: "0%",
+                duration: 1,
+                stagger: 0.04
+            })
+            .to(".hero-subtitle", { opacity: 1, duration: 1 }, "-=0.5")
+            .to(".hero-hr", { width: 120, duration: 1 }, "-=0.8")
+            .to(".hero-copy", { opacity: 1, duration: 1 }, "-=0.6")
+            .to(".hero-right", { opacity: 1, duration: 1.2, ease: "power3.inOut" }, "-=1");
+        });
+
+        // 2. Horizontal Scroll Lineup
+        const isDesktop = window.innerWidth > 768;
+        let scrollTween;
+        
+        if (isDesktop) {
+            const wrapper = document.getElementById('lineupWrapper');
+            const panels = gsap.utils.toArray(".model-panel");
+            
+            scrollTween = gsap.to(panels, {
+                xPercent: -100 * (panels.length - 1),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".section-lineup",
+                    pin: true,
+                    scrub: 1,
+                    snap: 1 / (panels.length - 1),
+                    end: () => "+=" + wrapper.offsetWidth
+                }
+            });
+
+            // Counters inside horizontal scroll
+            document.querySelectorAll('.counter').forEach((counter, i) => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                gsap.to(counter, {
+                    textContent: target,
+                    duration: 1.5,
+                    ease: "power2.out",
+                    snap: { textContent: 1 },
+                    scrollTrigger: {
+                        trigger: counter.closest('.model-panel'),
+                        containerAnimation: scrollTween,
+                        start: "left center",
+                        toggleActions: "play none none none"
+                    },
+                    onUpdate: function() {
+                        counter.innerHTML = new Intl.NumberFormat('en-US').format(Math.ceil(this.targets()[0].textContent));
+                    }
+                });
+            });
+        }
+
+        // 3. Spec Bars Fill
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+            const fillWidth = bar.getAttribute('data-fill');
+            gsap.to(bar, {
+                scaleX: parseFloat(fillWidth) / 100,
+                duration: 1.4,
+                ease: "cubic-bezier(0.23, 1, 0.32, 1)",
+                scrollTrigger: {
+                    trigger: ".section-bars",
+                    start: "top 75%",
+                    toggleActions: "play reverse play reverse"
+                }
+            });
+        });
+
+        // 4. Gallery Clip-Path Reveals
+        gsap.utils.toArray('.gallery-img').forEach(img => {
+            gsap.to(img, {
+                clipPath: "inset(0% 0 0 0)",
+                duration: 1.2,
+                ease: "power4.inOut",
+                scrollTrigger: {
+                    trigger: img,
+                    start: "top 85%",
+                    toggleActions: "play reverse play reverse"
+                }
+            });
+        });
+
+        // 5. Global Section Titles Requirement
+        gsap.utils.toArray(".section-title").forEach(title => {
+            // Avoid hero title if it has this class by accident
+            if (title.classList.contains('hero-title')) return;
+            
+            gsap.from(title, {
+                scrollTrigger: {
+                    trigger: title,
+                    start: "top 85%",
+                    end: "top 20%",
+                    toggleActions: "play reverse play reverse"
+                },
+                y: 80,
+                opacity: 0,
+                duration: 1,
+                ease: "power4.out"
+            });
+        });
+
+        // 6. CTA Form Stagger
+        gsap.from(".cta-field", {
+            scrollTrigger: {
+                trigger: ".cta-form",
+                start: "top 80%"
+            },
+            x: -40,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out"
+        });
+
+        // 7. Magnetic Button Logic
+        const magneticBtn = document.querySelector('.magnetic-btn');
+        magneticBtn.addEventListener('mousemove', (e) => {
+            const rect = magneticBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            // Limit the movement
+            gsap.to(magneticBtn, {
+                x: x * 0.15,
+                y: y * 0.15,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+        
+        magneticBtn.addEventListener('mouseleave', () => {
+            gsap.to(magneticBtn, {
+                x: 0,
+                y: 0,
+                duration: 0.7,
+                ease: "elastic.out(1, 0.3)"
+            });
+        });
+
+        // Button Submit State
+        magneticBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const originalText = this.textContent;
+            this.textContent = "REQUESTED ✓";
+            this.style.background = "#fff";
+            this.style.color = "#000";
+            
+            setTimeout(() => {
+                this.textContent = originalText;
+                this.style.background = "var(--accent-gold)";
+                this.style.color = "var(--bg-base)";
+            }, 3000);
+        });
+
+        // 8. Parallax Image Placeholders
+        gsap.utils.toArray('.image-placeholder').forEach(img => {
+            const bg = img.querySelector('.glow-bg');
+            if(bg) {
+                gsap.to(bg, {
+                    yPercent: 30,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: img,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>

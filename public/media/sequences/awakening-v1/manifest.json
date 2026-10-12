@@ -1,0 +1,16 @@
+{
+  "id": "awakening-v1",
+  "assetRegisterId": "ASSET-UNDERGROUND-REVEAL-001",
+  "rightsStatus": "approved",
+  "derivativeFramesAllowed": true,
+  "poster": "/media/sequences/awakening-v1/poster.webp",
+  "alt": "Black and gold supercar in underground garage dark reveal",
+  "desktop": {
+    "frameCount": 60,
+    "width": 1440,
+    "height": 810,
+    "extension": "webp",
+    "urlTemplate": "/media/sequences/awakening-v1/desktop/frame_{frame}.webp",
+    "totalBytes": 3859776
+  }
+}

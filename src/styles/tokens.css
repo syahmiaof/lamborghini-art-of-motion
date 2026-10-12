@@ -1,0 +1,30 @@
+:root {
+  color-scheme: dark;
+  /* Core Reference & Brand Tokens */
+  --bg-base: #0a0a0a;
+  --bg-surface: #141414;
+  --accent-gold: #c8a951;
+  --accent-red: #ff3b00;
+  --text-primary: #f5f5f0;
+  --text-secondary: #8a8a8a;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* Semantic Mappings */
+  --color-ink: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-paper: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-line: var(--border-subtle);
+  --color-accent: var(--accent-gold);
+  --color-accent-red: var(--accent-red);
+
+  /* Typography */
+  --font-display: 'Barlow Condensed', 'Space Grotesk', sans-serif;
+  --font-body: 'Manrope', 'DM Sans', sans-serif;
+  --font-tech: 'JetBrains Mono', monospace;
+
+  /* Layout */
+  --content-width: 1600px;
+  --page-gutter: clamp(20px, 4.3vw, 72px);
+  --section-padding: clamp(4rem, 8vw, 8rem);
+}

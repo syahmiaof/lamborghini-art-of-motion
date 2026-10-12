@@ -1,0 +1,10 @@
+id,shot,model,view,chapter,priority,status,sourceUrl,creator,rightsHolder,licenseEvidencePath,allowedUses,allowedDerivatives,expiry,creditRequirement,acquiredAt,reviewedAt,notes
+A01,Light signature front,Revuelto,front,Awakening,critical,needed,,,,,,,,,,Licensed still or sequence source
+A02,Full vehicle,Revuelto,three-quarter,Presence and Finale,critical,needed,,,,,,,,,,Desktop and mobile crops
+A03,Dynamic driving,Revuelto,track,Velocity,high,needed,,,,,,,,,,Static first; sequence optional
+A04,Engineering detail,Revuelto,powertrain or body,Engineering,high,needed,,,,,,,,,,Callouts must match photographed component
+A05,Cockpit and material,Revuelto,interior,Interior,high,needed,,,,,,,,,,Two complementary stills ideal
+A06,Comparable model view,Revuelto,three-quarter,Showroom,critical,needed,,,,,,,,,,Similar framing to A07 and A08
+A07,Comparable model view,Temerario,three-quarter,Showroom,critical,needed,,,,,,,,,,Similar framing to A06 and A08
+A08,Comparable model view,Urus SE,three-quarter,Showroom,critical,needed,,,,,,,,,,Similar framing to A06 and A07
+A09,Curated visual variant,Selected model,consistent view,Configure,conditional,needed,,,,,,,,,,One record per exposed valid combination

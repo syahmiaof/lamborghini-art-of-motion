@@ -1,0 +1,8 @@
+.scroll-image-sequence { position: relative; width: 100%; height: 100%; isolation: isolate; overflow: hidden; }
+.scroll-image-sequence__poster,
+.scroll-image-sequence__canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.scroll-image-sequence__poster { object-fit: var(--sequence-fit, cover); object-position: var(--sequence-focal, 50% 50%); z-index: 0; }
+.scroll-image-sequence__canvas { z-index: 1; opacity: 0; }
+.scroll-image-sequence__canvas[data-ready='true'] { opacity: 1; }
+.scroll-image-sequence__content { position: relative; z-index: 2; }
+@media (prefers-reduced-motion: reduce) { .scroll-image-sequence__canvas { display: none; } }

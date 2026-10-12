@@ -1,0 +1,46 @@
+.configurator { padding: clamp(80px, 10vw, 150px) var(--page-gutter); background: #16181a; }
+.configurator__heading { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 54px; }
+.configurator__heading h2 { margin: 0; font: 600 clamp(3rem, 6vw, 5.8rem)/.96 var(--font-display); letter-spacing: -.025em; text-transform: uppercase; }
+.configurator__heading h2 em { color: var(--color-muted); font-style: normal; }
+.configurator__heading > p { max-width: 300px; margin: 0 0 5px; color: var(--color-muted); font-size: 14px; line-height: 1.7; }
+.curated-views { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr); gap: clamp(32px, 5vw, 72px); padding-top: 44px; }
+.curated-views__preview { align-self: start; position: sticky; top: 100px; }
+.curated-views__preview .vehicle-image { aspect-ratio: 1.35; }
+.curated-views__image-caption { display: flex; justify-content: space-between; gap: 20px; padding: 16px 0; font-size: 11px; color: var(--color-muted); text-transform: uppercase; letter-spacing: .035em; }
+.curated-views__image-caption a { text-underline-offset: 4px; }
+.curated-views__title { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
+.curated-views__title h3 { margin: 0; font: 500 clamp(2rem, 3vw, 3rem)/1 var(--font-display); text-transform: none; }
+.curated-views__title > button { min-height: 44px; padding: 8px 0 8px 16px; color: var(--color-muted); background: transparent; border: 0; text-decoration: underline; text-underline-offset: 5px; font: 400 12px var(--font-body); cursor: pointer; }
+.curated-views fieldset { min-width: 0; margin: 0; border: 0; padding: 0; }
+.curated-views legend { width: 100%; margin-bottom: 16px; color: var(--color-muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+.curated-views__thumbnails { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.curated-views__thumbnails button { display: block; min-width: 0; padding: 0; border: 1px solid var(--color-line); background: transparent; color: var(--color-muted); cursor: pointer; transition: border-color 180ms, color 180ms; text-align: left; }
+.curated-views__thumbnails button:hover { border-color: var(--color-muted); color: var(--color-paper); }
+.curated-views__thumbnails button[aria-pressed='true'] { border-color: var(--color-accent); color: var(--color-paper); }
+.curated-views__thumbnails img { display: block; width: 100%; height: auto; aspect-ratio: 1.5; object-fit: cover; }
+.curated-views__thumbnails span { display: block; padding: 10px 9px; font-size: 10px; letter-spacing: .035em; text-transform: uppercase; }
+.curated-views__selection { min-height: 3em; margin: 15px 0 28px; font-size: 11px; line-height: 1.6; color: var(--color-muted); }
+.curated-views__unavailable > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 0; border-top: 1px solid var(--color-line); font-size: 12px; color: var(--color-muted); }
+.curated-views__unavailable > div:last-child { border-bottom: 1px solid var(--color-line); }
+.curated-views__unavailable button { border: 0; padding: 6px 0; color: var(--color-muted); background: transparent; font: 400 11px var(--font-body); cursor: not-allowed; }
+.curated-views__note { margin: 20px 0 28px; color: var(--color-muted); font-size: 12px; line-height: 1.7; }
+.curated-views__cta { display: flex; width: 100%; gap: 15px; }
+.curated-views__disclaimer { margin: 13px 0 0; color: var(--color-muted); font-size: 10px; line-height: 1.65; }
+@media (max-width: 1000px) {
+  .curated-views { grid-template-columns: minmax(0, 1.1fr) minmax(280px, 1fr); gap: 30px; }
+  .curated-views__preview .vehicle-image { aspect-ratio: .95; }
+}
+@media (max-width: 760px) {
+  .configurator__heading { flex-direction: column; align-items: start; gap: 24px; margin-bottom: 36px; }
+  .configurator__heading h2 { font-size: clamp(2.6rem, 10vw, 4rem); }
+  .configurator__heading > p { max-width: 440px; }
+  .curated-views { grid-template-columns: minmax(0, 1fr); gap: 22px; padding-top: 28px; }
+  .curated-views__preview { position: static; }
+  .curated-views__preview .vehicle-image { aspect-ratio: 1.25; }
+  .curated-views__title { margin-bottom: 24px; }
+  .curated-views__thumbnails { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .curated-views__selection { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .configurator * { transition: none; }
+}

@@ -65,8 +65,8 @@ export class FrameLoader {
     this.ready = ready
     this.decode = options.decode ?? decodeFrame
     const decodedSlots = Math.max(2, Math.floor((options.memoryBudgetBytes ?? 72 * 1024 * 1024) / (variant.width * variant.height * 4)))
-    this.concurrency = Math.max(1, Math.min(4, options.concurrency ?? 3, decodedSlots - 1))
-    this.capacity = Math.max(1, Math.min(16, options.capacity ?? 12, decodedSlots - this.concurrency))
+    this.concurrency = Math.max(1, Math.min(6, options.concurrency ?? 3, decodedSlots - 1))
+    this.capacity = Math.max(1, Math.min(32, options.capacity ?? 12, decodedSlots - this.concurrency))
     this.failed = options.onFailure ?? (() => {})
     this.changed = options.onChange ?? (() => {})
   }
@@ -94,7 +94,13 @@ export class FrameLoader {
       }
     }
     this.wanted = new Set(nearby)
-    for (const [index, controller] of this.jobs) if (!this.wanted.has(index) && !controller.signal.aborted) { controller.abort(); this.abortedCount++ }
+    const isDistantJob = (jobIdx: number) => Math.abs(jobIdx - target) > Math.max(limit * 2.5, 20)
+    for (const [jobIndex, controller] of this.jobs) {
+      if ((isDistantJob(jobIndex) || !this.active) && !controller.signal.aborted) {
+        controller.abort()
+        this.abortedCount++
+      }
+    }
     this.queue = nearby.filter(n => !this.cache.has(n) && !this.jobs.has(n) && (this.failures.get(n) ?? 0) < 2)
     this.drawAvailable()
     this.pump()
@@ -131,11 +137,17 @@ export class FrameLoader {
   private drawAvailable() {
     let index = this.target
     if (!this.cache.has(index)) {
-      // Hold a drawn image rather than oscillating among arriving neighbours.
-      if (this.displayed >= 0) return
-      const nearby = [...this.cache.keys()].filter(key => this.wanted.has(key)).sort((a, b) => Math.abs(a - this.target) - Math.abs(b - this.target))
-      if (!nearby.length) return
-      index = nearby[0]
+      const candidates = [...this.cache.keys()]
+        .filter(key => this.wanted.has(key))
+        .sort((a, b) => Math.abs(a - this.target) - Math.abs(b - this.target))
+      if (!candidates.length) return
+      const best = candidates[0]
+      // If a frame is already displayed, only switch to neighbor if it brings us
+      // strictly closer to the target than the currently displayed frame.
+      if (this.displayed >= 0 && Math.abs(best - this.target) >= Math.abs(this.displayed - this.target)) {
+        return
+      }
+      index = best
     }
     const frame = this.cache.get(index)!
     if (index === this.displayed) return

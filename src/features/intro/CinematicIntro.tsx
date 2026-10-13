@@ -103,10 +103,20 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
       if (closing || disposed) return
       closing = true
       cancelClock()
-      film.pause()
+      // Fade out the intro interface typography/controls first so only pure automotive footage dissolves
+      gsap.to('.intro-interface', { opacity: 0, duration: 0.3, ease: 'power2.out' })
+      // Trigger the hero section entrance in sync with the crossfade so the user sees the hero emerge smoothly
       reveal()
-      // Keep the final decoded frame mounted while the real page appears underneath.
-      exit = gsap.to(overlay, { opacity: 0, duration: 0.55, ease: 'power2.inOut', onComplete: complete })
+      // Keep the final decoded frame mounted while dissolving into the hero with luxurious ease
+      exit = gsap.to(overlay, {
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          film.pause()
+          complete()
+        },
+      })
     }
 
     const sync = () => {
@@ -129,7 +139,7 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
       }
       const phase = time < 1 ? 'standby' : time < 3 ? 'initializing' : time < 5 ? 'ignition' : time < 7.5 ? 'reveal' : time < 9.5 ? 'final' : 'handoff'
       if (phase !== lastPhase) { overlay.dataset.phase = phase; lastPhase = phase }
-      if (time >= 9.5) reveal()
+      if (time >= 9.4) finish()
     }
 
     const clock = () => {

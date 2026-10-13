@@ -6,11 +6,11 @@ import { pauseScroll } from '../motion/scroll'
 import { ScrollTrigger } from '../motion/gsap'
 export function ExperienceShell() {
   const [intro, setIntro] = useState(true)
-  const [mounted, setMounted] = useState(true)
+  const [revealed, setRevealed] = useState(false)
   const content = useRef<HTMLDivElement>(null)
-  const reveal = useCallback(() => setMounted(true), [])
+  const reveal = useCallback(() => setRevealed(true), [])
   const finish = useCallback(() => {
-    setMounted(true)
+    setRevealed(true)
     setIntro(false)
   }, [])
   useEffect(() => {
@@ -35,12 +35,13 @@ export function ExperienceShell() {
   }, [intro, finish])
   function replay() {
     window.scrollTo({ top: 0, behavior: 'instant' })
+    setRevealed(false)
     setIntro(true)
   }
   return <>
     <PlaybackContext value={!intro}>
       <div ref={content} inert={intro} aria-hidden={intro || undefined}>
-        {mounted && <Experience ready={!intro} onReplayIntro={replay} />}
+        <Experience ready={revealed || !intro} onReplayIntro={replay} />
       </div>
     </PlaybackContext>
     {intro && <CinematicIntro onReveal={reveal} onComplete={finish} />}

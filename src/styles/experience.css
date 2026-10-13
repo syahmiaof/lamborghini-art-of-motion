@@ -159,7 +159,7 @@ h1, h2, h3, .display-font {
     object-position: 85% 48%;
     transform: scale(1.0);
     filter: contrast(1.08) brightness(1.02) saturate(1.08);
-    transition: transform 1.2s ease-out;
+    will-change: transform, opacity, filter;
 }
 
 .hero-overlay {
@@ -265,11 +265,13 @@ h1, h2, h3, .display-font {
 
 .hero-title .char {
     display: inline-block;
-    transform: translateY(100%);
+    opacity: 0;
+    transform: translateY(40px);
     background: linear-gradient(180deg, #FFFFFF 15%, #E6E6E2 52%, #ABABAB 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 4px 22px rgba(0, 0, 0, 0.9));
+    will-change: transform, opacity;
 }
 
 .hero-subtitle {
@@ -1562,4 +1564,9 @@ select.form-input {
         transition-duration: 0.001ms !important;
         scroll-behavior: auto !important;
     }
+    .hero-title .char {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
+

@@ -318,25 +318,81 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
     // Hero Load Animation (Smooth parallel cascade matching target mockup)
     const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
     heroTl
-      .fromTo('.hud-header', { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0)
-      .to('.hero-bg-img', { scale: 1, duration: 1.4, ease: 'power2.out' }, 0)
-      .fromTo('.hero-eyebrow .eyebrow-line', { scaleX: 0 }, { scaleX: 1, duration: 0.4, transformOrigin: 'left center' }, 0.1)
-      .fromTo('.hero-eyebrow span:not(.eyebrow-line)', { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.4 }, 0.15)
-      .to('.hero-title .char', {
-        y: '0%',
-        opacity: 1,
-        duration: 0.65,
-        stagger: 0.02,
-      }, 0.2)
-      .fromTo('.hero-subtitle', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, 0.35)
-      .fromTo('.hero-underline-accent', { scaleX: 0 }, { scaleX: 1, duration: 0.4, transformOrigin: 'left center' }, 0.4)
-      .fromTo('.hero-copy', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, 0.45)
-      .fromTo('.hero-cta-group a', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.08 }, 0.5)
-      .fromTo('.hero-annotation', { opacity: 0, x: 15 }, { opacity: 1, x: 0, duration: 0.5 }, 0.45)
-      .fromTo('.scroll-indicator', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 0.5)
-      .fromTo('.metric-item', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.06 }, 0.55)
-      .fromTo('.metric-divider', { scaleY: 0 }, { scaleY: 1, duration: 0.35, transformOrigin: 'bottom center', stagger: 0.04 }, 0.6)
-      .fromTo('.hero-edition-panel', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 0.65)
+      .fromTo('.hero-bg-img',
+        { scale: 1.08, opacity: 0.65, filter: 'contrast(1.18) brightness(0.7) saturate(1.15)' },
+        { scale: 1.0, opacity: 1, filter: 'contrast(1.08) brightness(1.02) saturate(1.08)', duration: 2.2, ease: 'power2.out' },
+        0
+      )
+      .fromTo('.hero-overlay',
+        { opacity: 0.25 },
+        { opacity: 1, duration: 1.8, ease: 'power2.out' },
+        0
+      )
+      .fromTo('.hud-header',
+        { y: -24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' },
+        0.2
+      )
+      .fromTo('.hero-eyebrow .eyebrow-line',
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.65, ease: 'power2.inOut', transformOrigin: 'left center' },
+        0.3
+      )
+      .fromTo('.hero-eyebrow span:not(.eyebrow-line)',
+        { opacity: 0, x: -16 },
+        { opacity: 1, x: 0, duration: 0.65, ease: 'power3.out' },
+        0.35
+      )
+      .fromTo('.hero-title .char',
+        { y: 42, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.95, stagger: 0.026, ease: 'power3.out' },
+        0.4
+      )
+      .fromTo('.hero-subtitle',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' },
+        0.6
+      )
+      .fromTo('.hero-underline-accent',
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.6, transformOrigin: 'left center', ease: 'power2.out' },
+        0.65
+      )
+      .fromTo('.hero-copy',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' },
+        0.7
+      )
+      .fromTo('.hero-cta-group a',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.75, stagger: 0.1, ease: 'power3.out' },
+        0.8
+      )
+      .fromTo('.hero-annotation',
+        { opacity: 0, x: 22 },
+        { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' },
+        0.75
+      )
+      .fromTo('.scroll-indicator',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
+        0.85
+      )
+      .fromTo('.metric-item',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.75, stagger: 0.07, ease: 'power3.out' },
+        0.9
+      )
+      .fromTo('.metric-divider',
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.5, transformOrigin: 'bottom center', stagger: 0.04, ease: 'power2.out' },
+        0.95
+      )
+      .fromTo('.hero-edition-panel',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        1.0
+      )
 
     // Horizontal Scroll Lineup (Desktop viewports only)
     const lineupMedia = gsap.matchMedia()

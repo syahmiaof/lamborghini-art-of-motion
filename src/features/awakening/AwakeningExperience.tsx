@@ -15,6 +15,7 @@ export function AwakeningExperience({ onOpenVideoModal }: { onOpenVideoModal?: (
         alt={awakeningManifest.alt}
         fit="cover"
         mobileFit="cover"
+        priority={true}
         className="scene-media"
       />
       <div className="scene-shade" aria-hidden="true" />

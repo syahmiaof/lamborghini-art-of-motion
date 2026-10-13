@@ -18,13 +18,14 @@
 .intro-skip { display: inline-flex; align-items: center; justify-content: center; gap: 18px; grid-column: 2; grid-row: 1; align-self: start; min-height: 44px; padding: 8px 0 8px 16px; color: #efeee6; border: 0; background: transparent; font-family: var(--font-body, sans-serif); font-size: 10px; line-height: 1.5; letter-spacing: .11em; text-transform: uppercase; cursor: pointer; }
 .intro-skip:hover { color: #dfc576; }
 .intro-skip:focus-visible, .intro-playback-fallback button:focus-visible { outline: 2px solid #dfc576; outline-offset: 7px; }
-.intro-copy { grid-column: 1 / -1; grid-row: 2; position: relative; align-self: end; min-height: clamp(100px, 11vw, 156px); margin-bottom: 32px; pointer-events: none; }
-.intro-standby { margin: 0; position: absolute; bottom: 30px; font-family: var(--font-body, sans-serif); color: #d4bc75; font-size: 11px; line-height: 1.5; letter-spacing: .16em; }
-.intro-stage { position: absolute; inset: auto 0 0; visibility: hidden; opacity: 0; }
-.intro-stage__mask { overflow: clip; padding-bottom: .08em; }
-.intro-stage__line { margin: 0; }
-.intro-stage__title { max-width: 90%; font-family: var(--font-display, sans-serif); font-weight: 500; font-size: clamp(40px, 6.2vw, 104px); line-height: .98; letter-spacing: -.015em; text-wrap: balance; }
-.intro-stage__label { margin-top: 16px; color: #dfc576; font-family: var(--font-body, sans-serif); font-size: 10px; line-height: 1.6; letter-spacing: .19em; }
+.intro-copy { grid-column: 1 / -1; grid-row: 2; position: relative; align-self: end; min-height: clamp(130px, 15vw, 210px); margin-bottom: clamp(28px, 4vh, 44px); pointer-events: none; }
+.intro-standby { margin: 0; position: absolute; bottom: 24px; font-family: var(--font-body, sans-serif); color: #d4bc75; font-size: 11px; line-height: 1.5; letter-spacing: .22em; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8); will-change: transform, opacity, filter; }
+.intro-stage { position: absolute; inset: auto 0 0; visibility: hidden; opacity: 0; will-change: transform, opacity, filter; }
+.intro-stage__mask { overflow: visible; padding-bottom: .15em; }
+.intro-stage__line { margin: 0; will-change: transform, opacity, filter; backface-visibility: hidden; }
+.intro-stage__title { max-width: 95%; font-family: var(--font-display, sans-serif); font-weight: 500; font-size: clamp(38px, 5.8vw, 96px); line-height: 1.02; letter-spacing: .02em; text-wrap: balance; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.85); }
+.intro-stage__title .intro-char { display: inline-block; will-change: transform, opacity, filter; backface-visibility: hidden; }
+.intro-stage__label { margin-top: 14px; color: #dfc576; font-family: var(--font-body, sans-serif); font-size: 11px; line-height: 1.6; letter-spacing: .24em; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.9); will-change: transform, opacity, filter; }
 .intro-final-divider { position: absolute; bottom: 30px; left: 0; width: min(200px, 24vw); height: 1px; background: #c8a951; transform-origin: left; opacity: 0; }
 .intro-progress { grid-column: 1 / -1; grid-row: 3; width: min(360px, 100%); visibility: hidden; opacity: 0; }
 .intro-progress__labels { display: flex; justify-content: space-between; gap: 20px; color: #c9c5b9; margin-bottom: 11px; font-family: var(--font-body, sans-serif); font-size: 9px; line-height: 1.4; text-transform: uppercase; letter-spacing: .1em; font-variant-numeric: tabular-nums; }

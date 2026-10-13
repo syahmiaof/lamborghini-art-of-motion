@@ -7,6 +7,25 @@ type CinematicIntroProps = {
   onComplete: () => void
 }
 
+function SplitText({ text }: { text: string }) {
+  return (
+    <>
+      {text.split('').map((char, index) => (
+        <span
+          key={index}
+          className="intro-char"
+          style={{
+            display: 'inline-block',
+            whiteSpace: char === ' ' ? 'pre' : 'normal',
+          }}
+        >
+          {char}
+        </span>
+      ))}
+    </>
+  )
+}
+
 /** Native film playback owns this clock. ScrollTrigger never controls the intro. */
 export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
   const root = useRef<HTMLDivElement>(null)
@@ -48,26 +67,78 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
     let visibleMs = 0
     let guardStamp = performance.now()
 
-    const typography = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
+    let playStartRealTime = 0
+    let playStartVideoTime = 0
+    let smoothedTime = 0
+
+    const typography = gsap.timeline({ paused: true })
     typography
       .set('.intro-stage', { autoAlpha: 0 }, 0)
-      .set('.intro-stage__line', { yPercent: 110 }, 0)
-      .set('.intro-standby', { autoAlpha: 1 }, 0)
-      .fromTo('.intro-structural-line', { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'power2.inOut' }, 0)
-      .to('.intro-standby', { autoAlpha: 0, duration: 0.18 }, 0.82)
-      .set('.intro-stage--initializing', { autoAlpha: 1 }, 1)
-      .to('.intro-stage--initializing .intro-stage__line', { yPercent: 0, duration: 0.65, stagger: 0.08 }, 1)
-      .to('.intro-stage--initializing', { autoAlpha: 0, duration: 0.18 }, 2.82)
-      .set('.intro-stage--ignition', { autoAlpha: 1 }, 3)
-      .to('.intro-stage--ignition .intro-stage__line', { yPercent: 0, duration: 0.6, stagger: 0.06 }, 3)
-      .to('.intro-progress', { autoAlpha: 1, duration: 0.35 }, 3)
-      .to('.intro-stage--ignition', { autoAlpha: 0, duration: 0.18 }, 4.82)
-      .set('.intro-stage--motion', { autoAlpha: 1 }, 5)
-      .to('.intro-stage--motion .intro-stage__line', { yPercent: 0, duration: 0.75, stagger: 0.09 }, 5)
-      .to('.intro-stage--motion', { autoAlpha: 0, duration: 0.3 }, 7.5)
-      .to('.intro-brand, .intro-progress', { autoAlpha: 0, duration: 0.4 }, 7.5)
-      .fromTo('.intro-final-divider', { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.8, ease: 'power2.inOut' }, 7.5)
-      .to('.intro-final-divider, .intro-structural-line', { autoAlpha: 0, duration: 0.5 }, 9.5)
+      .set('.intro-stage__title .intro-char', { y: 28, opacity: 0, filter: 'blur(8px)' }, 0)
+      .set('.intro-stage__label', { y: 16, opacity: 0, filter: 'blur(6px)' }, 0)
+      .set('.intro-standby', { autoAlpha: 0, y: 14, filter: 'blur(6px)' }, 0)
+      .fromTo('.intro-structural-line', { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, 0)
+
+      // 0. Standby enters softly
+      .to('.intro-standby', { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 0.65, ease: 'power3.out' }, 0.08)
+      .to('.intro-standby', { autoAlpha: 0, y: -12, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in' }, 0.88)
+
+      // 1. Initializing Stage (t = 1.05s to 2.85s)
+      .set('.intro-stage--initializing', { autoAlpha: 1 }, 1.05)
+      .to('.intro-stage--initializing .intro-char', {
+        y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85, stagger: 0.035, ease: 'power3.out'
+      }, 1.05)
+      .to('.intro-stage--initializing .intro-stage__label', {
+        y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out'
+      }, 1.25)
+      // Initializing smooth exit
+      .to('.intro-stage--initializing .intro-char', {
+        y: -18, opacity: 0, filter: 'blur(6px)', duration: 0.5, stagger: 0.015, ease: 'power2.in'
+      }, 2.5)
+      .to('.intro-stage--initializing .intro-stage__label', {
+        y: -14, opacity: 0, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in'
+      }, 2.55)
+      .set('.intro-stage--initializing', { autoAlpha: 0 }, 3.05)
+
+      // 2. Ignition Stage (t = 3.05s to 4.85s)
+      .set('.intro-stage--ignition', { autoAlpha: 1 }, 3.05)
+      .to('.intro-progress', { autoAlpha: 1, duration: 0.5, ease: 'power2.out' }, 3.05)
+      .to('.intro-stage--ignition .intro-char', {
+        y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85, stagger: 0.028, ease: 'power3.out'
+      }, 3.05)
+      .to('.intro-stage--ignition .intro-stage__label', {
+        y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out'
+      }, 3.25)
+      // Ignition smooth exit
+      .to('.intro-stage--ignition .intro-char', {
+        y: -18, opacity: 0, filter: 'blur(6px)', duration: 0.5, stagger: 0.015, ease: 'power2.in'
+      }, 4.5)
+      .to('.intro-stage--ignition .intro-stage__label', {
+        y: -14, opacity: 0, filter: 'blur(6px)', duration: 0.45, ease: 'power2.in'
+      }, 4.55)
+      .set('.intro-stage--ignition', { autoAlpha: 0 }, 5.05)
+
+      // 3. Motion Stage (t = 5.05s to 7.6s)
+      .set('.intro-stage--motion', { autoAlpha: 1 }, 5.05)
+      .to('.intro-stage--motion .intro-char', {
+        y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.95, stagger: 0.025, ease: 'power3.out'
+      }, 5.05)
+      .to('.intro-stage--motion .intro-stage__label', {
+        y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85, ease: 'power3.out'
+      }, 5.3)
+      // Motion smooth exit
+      .to('.intro-stage--motion .intro-char', {
+        y: -18, opacity: 0, filter: 'blur(6px)', duration: 0.6, stagger: 0.015, ease: 'power2.in'
+      }, 7.2)
+      .to('.intro-stage--motion .intro-stage__label', {
+        y: -14, opacity: 0, filter: 'blur(6px)', duration: 0.55, ease: 'power2.in'
+      }, 7.25)
+      .set('.intro-stage--motion', { autoAlpha: 0 }, 7.9)
+
+      // 4. Outro transition (t = 7.5s to 9.5s)
+      .to('.intro-brand, .intro-progress', { autoAlpha: 0, duration: 0.55, ease: 'power2.inOut' }, 7.5)
+      .fromTo('.intro-final-divider', { scaleX: 0, autoAlpha: 0 }, { scaleX: 1, autoAlpha: 1, duration: 0.9, ease: 'power2.inOut' }, 7.4)
+      .to('.intro-final-divider, .intro-structural-line', { autoAlpha: 0, duration: 0.6, ease: 'power2.out' }, 9.2)
     typography.time(0)
 
     const reveal = () => {
@@ -104,7 +175,7 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
       closing = true
       cancelClock()
       // Fade out the intro interface typography/controls first so only pure automotive footage dissolves
-      gsap.to('.intro-interface', { opacity: 0, duration: 0.3, ease: 'power2.out' })
+      gsap.to('.intro-interface', { opacity: 0, duration: 0.35, ease: 'power2.out' })
       // Trigger the hero section entrance in sync with the crossfade so the user sees the hero emerge smoothly
       reveal()
       // Keep the final decoded frame mounted while dissolving into the hero with luxurious ease
@@ -121,9 +192,33 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
 
     const sync = () => {
       if (disposed || closing) return
-      const time = Math.max(0, Math.min(10, film.currentTime))
-      typography.time(time, true)
-      const ratio = Math.min(1, time / (Number.isFinite(film.duration) && film.duration > 0 ? film.duration : 10))
+
+      const targetTime = Math.max(0, Math.min(10, film.currentTime))
+      if (!film.paused && film.readyState >= 2) {
+        if (playStartRealTime === 0) {
+          playStartRealTime = performance.now()
+          playStartVideoTime = targetTime
+        }
+        const realElapsed = (performance.now() - playStartRealTime) * 0.001
+        const continuousTime = Math.max(0, Math.min(10, playStartVideoTime + realElapsed))
+        
+        const drift = targetTime - continuousTime
+        if (Math.abs(drift) > 0.25) {
+          playStartRealTime = performance.now()
+          playStartVideoTime = targetTime
+          smoothedTime = targetTime
+        } else {
+          playStartVideoTime += drift * 0.08
+          smoothedTime = continuousTime
+        }
+      } else {
+        playStartRealTime = 0
+        smoothedTime = targetTime
+      }
+
+      typography.time(smoothedTime)
+
+      const ratio = Math.min(1, smoothedTime / (Number.isFinite(film.duration) && film.duration > 0 ? film.duration : 10))
       if (progress.current) {
         progress.current.style.transform = `scaleX(${ratio})`
         const percent = Math.round(ratio * 100)
@@ -132,14 +227,14 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
           lastPercent = percent
         }
       }
-      const second = Math.floor(time)
+      const second = Math.floor(smoothedTime)
       if (elapsed.current && second !== lastSecond) {
         elapsed.current.textContent = `00:${String(second).padStart(2, '0')} / 00:10`
         lastSecond = second
       }
-      const phase = time < 1 ? 'standby' : time < 3 ? 'initializing' : time < 5 ? 'ignition' : time < 7.5 ? 'reveal' : time < 9.5 ? 'final' : 'handoff'
+      const phase = smoothedTime < 1 ? 'standby' : smoothedTime < 3 ? 'initializing' : smoothedTime < 5 ? 'ignition' : smoothedTime < 7.5 ? 'reveal' : smoothedTime < 9.5 ? 'final' : 'handoff'
       if (phase !== lastPhase) { overlay.dataset.phase = phase; lastPhase = phase }
-      if (time >= 9.4) finish()
+      if (smoothedTime >= 9.4) finish()
     }
 
     const clock = () => {
@@ -147,8 +242,7 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
       rafId = undefined
       if (disposed || closing || film.paused || document.hidden) return
       sync()
-      if (typeof film.requestVideoFrameCallback === 'function') frameId = film.requestVideoFrameCallback(clock)
-      else rafId = requestAnimationFrame(clock)
+      rafId = requestAnimationFrame(clock)
     }
 
     const tryPlay = () => {
@@ -261,15 +355,16 @@ export function CinematicIntro({ onReveal, onComplete }: CinematicIntroProps) {
         <div className="intro-copy" aria-hidden="true">
           <p className="intro-standby">SYSTEM 01 — STANDBY</p>
           <div className="intro-stage intro-stage--initializing">
-            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__title">INITIALIZING</p></div>
+            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__title"><SplitText text="INITIALIZING" /></p></div>
             <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__label">V12 HYBRID SYSTEM</p></div>
           </div>
           <div className="intro-stage intro-stage--ignition">
-            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__title">IGNITION SEQUENCE</p></div>
+            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__title"><SplitText text="IGNITION SEQUENCE" /></p></div>
+            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__label">1,015 CV · 3× AXIAL FLUX</p></div>
           </div>
           <div className="intro-stage intro-stage--motion">
-            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__title">THE ART OF MOTION</p></div>
-            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__label">NERO × ORO</p></div>
+            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__title"><SplitText text="THE ART OF MOTION" /></p></div>
+            <div className="intro-stage__mask"><p className="intro-stage__line intro-stage__label">NERO NEMESIS × ORO ELEGANZA</p></div>
           </div>
           <span className="intro-final-divider" />
         </div>

@@ -571,7 +571,7 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
     }
 
     setFormError('')
-    setBtnText('RESERVATION REQUESTED âœ“')
+    setBtnText('RESERVATION REQUESTED ✓')
     setBtnSubmitted(true)
 
     setTimeout(() => {
@@ -1160,7 +1160,7 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
               onClick={() => setActiveModalCar(null)}
               aria-label="Close modal"
             >
-              âœ•
+              ✕
             </button>
             <div className="quick-view-body">
               <div className="quick-view-img">
@@ -1219,7 +1219,7 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
 
       <footer className="page-footer tech-font" role="contentinfo">
         {onReplayIntro && <button className="replay-intro" onClick={onReplayIntro}>Replay the opening film</button>}
-        <p>Independent Concept Experience Â· Not Affiliated with Automobili Lamborghini S.p.A. Â· Photography licensed under Creative Commons</p>
+        <p>Independent Concept Experience · Not Affiliated with Automobili Lamborghini S.p.A. · Photography licensed under Creative Commons</p>
       </footer>
 
       {/* 1080P SOURCE FOOTAGE MODAL */}

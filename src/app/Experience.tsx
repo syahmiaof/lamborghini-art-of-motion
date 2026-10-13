@@ -229,7 +229,7 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
       lenis.raf(time * 1000)
     }
     gsap.ticker.add(updateTicker)
-    gsap.ticker.lagSmoothing(0)
+    gsap.ticker.lagSmoothing(500, 33)
 
     // Global scroll progress bar update
     const handleScroll = () => {

@@ -1263,6 +1263,25 @@ select.form-input {
     color: var(--accent-gold);
     transform: scale(1.08);
 }
+.hud-film-btn {
+    background: rgba(200, 169, 81, 0.12);
+    border: 1px solid rgba(200, 169, 81, 0.45);
+    color: var(--accent-gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-tech);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: all 0.2s ease;
+}
+.hud-film-btn:hover {
+    background: var(--accent-gold);
+    color: #0A0A0A;
+}
 .hud-progress-bar {
     position: absolute;
     bottom: 0;

@@ -4,16 +4,12 @@ import { CinematicIntro } from '../features/intro/CinematicIntro'
 import { PlaybackContext } from '../motion/PlaybackContext'
 import { pauseScroll } from '../motion/scroll'
 import { ScrollTrigger } from '../motion/gsap'
-
-const sessionKey = 'art-of-motion:intro:v1'
-
 export function ExperienceShell() {
-  const [intro, setIntro] = useState(false)
+  const [intro, setIntro] = useState(true)
   const [mounted, setMounted] = useState(true)
   const content = useRef<HTMLDivElement>(null)
   const reveal = useCallback(() => setMounted(true), [])
   const finish = useCallback(() => {
-    try { sessionStorage.setItem(sessionKey, 'seen') } catch { /* Storage is optional. */ }
     setMounted(true)
     setIntro(false)
   }, [])

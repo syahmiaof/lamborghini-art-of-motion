@@ -312,6 +312,14 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
         scaleX: 1,
         scaleY: 1,
       })
+      gsap.utils.toArray<HTMLElement>('.bar-fill').forEach((bar) => {
+        const fillWidth = bar.getAttribute('data-fill') || '0%'
+        gsap.set(bar, { scaleX: parseFloat(fillWidth) / 100 })
+      })
+      document.querySelectorAll('.counter').forEach((counter) => {
+        const target = parseInt(counter.getAttribute('data-target') || '0', 10)
+        counter.innerHTML = new Intl.NumberFormat('en-US').format(target)
+      })
       return
     }
 
@@ -438,16 +446,20 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
     // Spec Bars Fill (Dynamic Performance Benchmarks)
     gsap.utils.toArray<HTMLElement>('.bar-fill').forEach((bar) => {
       const fillWidth = bar.getAttribute('data-fill') || '0%'
-      gsap.to(bar, {
-        scaleX: parseFloat(fillWidth) / 100,
-        duration: 1.3,
-        ease: 'cubic-bezier(0.23, 1, 0.32, 1)',
-        scrollTrigger: {
-          trigger: '.section-bars',
-          start: 'top 75%',
-          toggleActions: 'play none none reverse',
-        },
-      })
+      const ratio = parseFloat(fillWidth) / 100
+      gsap.fromTo(bar,
+        { scaleX: 0 },
+        {
+          scaleX: ratio,
+          duration: 1.5,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: bar.closest('.bar-group') || '.section-bars',
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      )
     })
 
     // Gallery Clip-Path Reveals
@@ -952,7 +964,7 @@ export function Experience({ ready = true, onReplayIntro }: { ready?: boolean; o
 
           <div className="bar-group">
             <div className="bar-header">
-              <span className="bar-label">MONOFUSELAGE TORSIONAL RIGIDITY <small>(40,000 Nm/Â° carbon composite chassis)</small></span>
+              <span className="bar-label">MONOFUSELAGE TORSIONAL RIGIDITY <small>(40,000 Nm/° carbon composite chassis)</small></span>
               <span className="bar-value">95%</span>
             </div>
             <div className="bar-track">

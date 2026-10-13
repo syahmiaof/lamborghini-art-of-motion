@@ -6,4 +6,4 @@
 .scroll-image-sequence__canvas[data-ready='true'] { opacity: 1; }
 .scroll-image-sequence__content { position: relative; z-index: 2; }
 @media (prefers-reduced-motion: reduce) { .scroll-image-sequence__canvas { display: none; } }
-@media (max-width: 899px) { .scroll-image-sequence__poster { object-fit: var(--sequence-mobile-fit, contain); } }
+@media (max-width: 899px) { .scroll-image-sequence__poster { object-fit: var(--sequence-mobile-fit, cover); } }

@@ -89,8 +89,9 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
           surface.dataset.frame = String(index)
         } catch { surface.dataset.drawError = 'true' }
       }, {
-        capacity: compact ? 10 : 12,
-        concurrency: compact ? 2 : 3,
+        capacity: compact ? 14 : 28,
+        concurrency: compact ? 3 : 6,
+        memoryBudgetBytes: compact ? 40 * 1024 * 1024 : 140 * 1024 * 1024,
         onFailure: index => { surface.dataset.failedFrame = String(index) },
         onChange: stats => {
           surface.dataset.cache = String(stats.cached)
@@ -105,7 +106,7 @@ export function ScrollImageSequence({ poster, alt, manifest, className = '', chi
       loader.suspend()
       const update = () => {
         const target = frameIndex(progress.current, variant.frameCount)
-        if (near && posterSettled && !constrained() && !document.hidden) loader.resume(target, visible ? undefined : 2)
+        if (near && posterSettled && !constrained() && !document.hidden) loader.resume(target, visible ? undefined : (compact ? 4 : 8))
         else loader.suspend()
         surface.dataset.target = String(target)
       }

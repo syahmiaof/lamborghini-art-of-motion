@@ -2,9 +2,10 @@
   <h1>LAMBORGHINI — THE ART OF MOTION</h1>
   <p><strong>Cinematic automotive scrollytelling web experience with deterministic Canvas 2D image sequence playback.</strong></p>
   <p>
-    <a href="https://lamborghini.syahmiaof.my">Live experience</a> · 
-    <a href="https://syahmiaof.my">Portfolio</a> · 
-    <a href="https://lamborghini-art-of-motion.vercel.app">Vercel mirror</a>
+    <a href="https://lamborghini.syahmiaof.my"><img src="https://img.shields.io/badge/Demo-Live-101713?style=for-the-badge&logoColor=60E1B5&labelColor=101713" alt="Demo" /></a>
+    <a href="https://github.com/syahmiaof/lamborghini-art-of-motion"><img src="https://img.shields.io/badge/Source-GitHub-101713?style=for-the-badge&logo=github&logoColor=60E1B5&labelColor=101713" alt="GitHub" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-101713?style=for-the-badge&logoColor=60E1B5&labelColor=101713" alt="License" /></a>
+    <a href="https://syahmiaof.my"><img src="https://img.shields.io/badge/Author-syahmiaof-101713?style=for-the-badge&logo=vercel&logoColor=60E1B5&labelColor=101713" alt="Author" /></a>
   </p>
 </div>
 
@@ -14,9 +15,9 @@
 
 ## Narrative & Motion Architecture
 
-~~~text
+```text
 User Scroll (Lenis Engine) → GSAP ScrollTrigger (Normalized Progress 0.0–1.0) → FrameLoader (Off-thread ImageBitmap + LRU Cache) → Canvas 2D Viewport Fill → Choreographed Typography & Telemetry Beats
-~~~
+```
 
 The website unfolds across 8 semantic chapters:
 
@@ -38,24 +39,25 @@ The website unfolds across 8 semantic chapters:
 | Rendering Engine | HTML5 Canvas 2D, Bounded LRU Cache, Off-thread `createImageBitmap` |
 | Asset Pipeline | WebP frame sequences (1080p source @ 24fps), Chiaroscuro grade |
 | Styling | Pure CSS3, Custom tokens, Chiaroscuro grading, Responsive `clamp()` |
+| Quality & Testing | Node Test Runner, Playwright QA, GitHub Actions CI |
 | Delivery & CDN | GitHub, Vercel Production, Cloudflare Edge Worker & DNS |
 
 ## Run
 
-~~~bash
+```bash
 npm install
 npm run dev
 npm run typecheck
 npm run lint
 npm test
 npm run build
-~~~
+```
 
 ## Browser QA
 
-~~~bash
+```bash
 npm run qa
-~~~
+```
 
 The automated Playwright test suite verifies:
 - 5 responsive viewports: Desktop (1440×900), Ultrawide (1920×1080), Tablet (768×1024), Mobile (390×844), and Short (1280×560).
@@ -69,7 +71,7 @@ The automated Playwright test suite verifies:
 - **Vercel Production:** [lamborghini-art-of-motion.vercel.app](https://lamborghini-art-of-motion.vercel.app)
 - **Edge Routing:** Cloudflare Edge Worker (`lamborghini-art-of-motion`)
 
-Vercel automatically deploys the `main` branch. Raw 1080p source clips and QA artifacts stay outside the production bundle.
+Vercel automatically deploys the `main` branch. Raw source clips are archived under `input_videos/` and test preview captures are organized under `docs/previews/`.
 
 ## Engineering Notes & Limits
 
